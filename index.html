@@ -2,157 +2,273 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AUTO LIFE</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AUTO LIFE — Автомобильный помощник</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#0b0e13;color:#f4f5f7;font-family:Arial,sans-serif}
 header{padding:20px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #252e3b}
-.logo{font-size:24px;font-weight:800}
+.logo{font-size:24px;font-weight:800;letter-spacing:1px}
 .logo span{color:#39a7ff}
 main{max-width:1100px;margin:35px auto;padding:0 18px}
-h1{font-size:28px;margin-bottom:10px}
+h1{font-size:28px;margin-bottom:9px}
 .sub{color:#929ba9;margin-bottom:25px}
-button{background:#258de0;color:white;border:0;border-radius:9px;padding:13px 18px;font-weight:bold;cursor:pointer}
-.car{background:linear-gradient(120deg,#192536,#10151e);border:1px solid #29384b;border-radius:16px;padding:23px;margin-bottom:20px}
-.car h2{margin-bottom:12px}
-.car p{color:#b0bac8;margin:7px 0}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
-.card,.item{background:#151b24;border:1px solid #252e3b;border-radius:13px;padding:19px}
-.card small{color:#9ba6b5}
-.card h2{margin-top:12px;font-size:22px}
+button{background:#258de0;color:white;border:0;border-radius:9px;padding:12px 17px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+.secondary{background:#303947}
+.danger{background:#9c343b}
+.panel{background:#151b24;border:1px solid #293442;border-radius:15px;padding:22px;margin-bottom:20px}
+.panel h2{font-size:19px;margin-bottom:17px}
+.carInfo p{color:#bdc6d2;margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.stat{background:#151b24;border:1px solid #252e3b;border-radius:13px;padding:18px}
+.stat small{color:#9ba6b5}
+.stat h2{font-size:22px;margin-top:12px}
 .blue{color:#39a7ff}
-.sections{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.item h3{margin-bottom:10px}
-.item p{color:#9ba6b5;font-size:14px;line-height:1.5}
-.empty{color:#9ba6b5;line-height:1.6}
-#formArea{display:none;background:#151b24;border:1px solid #344255;border-radius:16px;padding:22px;margin-bottom:22px}
-#formArea h2{margin-bottom:18px}
-label{display:block;color:#bdc6d2;font-size:13px;margin:13px 0 7px}
-input{width:100%;padding:13px;background:#0c1119;color:white;border:1px solid #344255;border-radius:8px;font-size:16px}
-.actions{display:flex;gap:10px;margin-top:20px}
-.cancel{background:#303947}
-footer{text-align:center;color:#687383;padding:35px}
-@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.sections{grid-template-columns:1fr}h1{font-size:24px}}
+.green{color:#48cf94}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+label{display:block;color:#aeb9c8;font-size:13px;margin:13px 0 7px}
+input,select,textarea{width:100%;padding:13px;background:#0c1119;color:white;border:1px solid #344255;border-radius:8px;font-size:15px}
+input:focus,select:focus{outline:1px solid #258de0}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.hidden{display:none!important}
+.expense{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:15px 0;border-bottom:1px solid #293442}
+.expense:last-child{border-bottom:0}
+.expense small{display:block;color:#929ba9;margin-top:5px}
+.expense strong{white-space:nowrap}
+.expense button{padding:8px 11px}
+.muted{color:#929ba9;line-height:1.6}
+.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+footer{text-align:center;color:#687383;padding:35px 10px}
+@media(max-width:700px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.grid{grid-template-columns:1fr}
+h1{font-size:24px}
+.expense{align-items:flex-start}
+}
 </style>
 </head>
 <body>
-
 <header>
  <div class="logo">AUTO <span>LIFE</span></div>
- <button onclick="showForm()">+ Добавить авто</button>
+ <span style="color:#48cf94;font-size:12px">● Личный кабинет</span>
 </header>
 
 <main>
  <h1>Твой автомобиль под контролем</h1>
- <p class="sub">Обслуживание, расходы и история автомобиля в одном месте.</p>
+ <p class="sub">Вся информация о машине и расходах в одном месте.</p>
 
- <section id="formArea">
-  <h2>Добавление автомобиля</h2>
-  <form id="carForm">
-   <label>Марка автомобиля</label>
-   <input id="brand" placeholder="Например, Honda" required>
+ <section class="panel">
+  <div class="sectionTitle">
+   <h2>🚘  Мой автомобиль</h2>
+   <button onclick="toggle('carForm')">+ Добавить / изменить</button>
+  </div>
+  <div id="carInfo" class="carInfo muted">Автомобиль пока не добавлен.</div>
 
-   <label>Модель</label>
-   <input id="model" placeholder="Например, Civic" required>
-
-   <label>Год выпуска</label>
-   <input id="year" type="number" min="1950" max="2027" placeholder="2002" required>
-
-   <label>Двигатель</label>
-   <input id="engine" placeholder="Например, 1.7 D17A1">
-
-   <label>Текущий пробег (км)</label>
-   <input id="mileage" type="number" min="0" placeholder="250000" required>
-
+  <form id="carForm" class="hidden">
+   <div class="grid">
+    <div><label>Марка</label><input id="brand" required placeholder="Honda"></div>
+    <div><label>Модель</label><input id="model" required placeholder="Civic"></div>
+    <div><label>Год выпуска</label><input id="year" type="number" min="1950" max="2027" required placeholder="2002"></div>
+    <div><label>Двигатель</label><input id="engine" placeholder="1.7 D17A1"></div>
+    <div><label>Пробег (км)</label><input id="mileage" type="number" min="0" required placeholder="305000"></div>
+   </div>
    <div class="actions">
     <button type="submit">Сохранить автомобиль</button>
-    <button type="button" class="cancel" onclick="hideForm()">Отмена</button>
+    <button type="button" class="secondary" onclick="toggle('carForm')">Отмена</button>
    </div>
   </form>
  </section>
 
- <section class="car" id="carCard">
-  <h2>🚘 Мой автомобиль</h2>
-  <p class="empty">Пока автомобиль не добавлен. Нажми кнопку выше, чтобы начать.</p>
+ <div class="stats">
+  <div class="stat"><small>Расходы за месяц</small><h2 class="blue" id="monthTotal">0 ₽</h2></div>
+  <div class="stat"><small>Расходы за год</small><h2 id="yearTotal">0 ₽</h2></div>
+  <div class="stat"><small>Всего расходов</small><h2 id="allTotal">0 ₽</h2></div>
+<div class="stat"><small>Количество записей</small><h2 id="countTotal">0</h2></div>
+ </div>
+
+ <section class="panel">
+  <div class="sectionTitle">
+   <h2>💰  Мои расходы</h2>
+   <button onclick="toggle('expenseForm')">+ Добавить расход</button>
+  </div>
+
+  <form id="expenseForm" class="hidden">
+   <div class="grid">
+    <div>
+     <label>Категория</label>
+     <select id="category" required>
+      <option value="Бензин">⛽  Бензин</option>
+      <option value="Ремонт">🔧  Ремонт</option>
+      <option value="Масло и фильтры">🛢️  Масло и фильтры</option>
+      <option value="Шины и диски">🛞  Шины и диски</option>
+      <option value="Мойка">🧽  Мойка</option>
+      <option value="Страховка">📄  Страховка</option>
+      <option value="Налоги">💳  Налоги</option>
+      <option value="Штрафы">🚨  Штрафы</option>
+      <option value="Другое">📦  Другое</option>
+     </select>
+    </div>
+    <div><label>Сумма (₽)</label><input id="amount" type="number" min="1" step="0.01" required placeholder="3500"></div>
+    <div><label>Дата</label><input id="expenseDate" type="date" required></div>
+    <div><label>Описание</label><input id="description" placeholder="Например, АИ-95"></div>
+   </div>
+   <div class="actions">
+    <button type="submit">Сохранить расход</button>
+    <button type="button" class="secondary" onclick="toggle('expenseForm')">Отмена</button>
+   </div>
+  </form>
+
+  <div id="expenseList" class="muted">Пока расходов нет. Добавь первую запись.</div>
  </section>
 
- <section class="stats">
-  <div class="card"><small>Расходы за месяц</small><h2 class="blue" id="monthCost">0 ₽</h2></div>
-  <div class="card"><small>Расходы за год</small><h2 id="yearCost">0 ₽</h2></div>
-  <div class="card"><small>Заправки</small><h2>0</h2></div>
-  <div class="card"><small>Обслуживание</small><h2>0</h2></div>
+ <section class="panel">
+  <h2>📊  Аналитика расходов</h2>
+  <div id="analytics" class="muted">Добавь расходы, чтобы увидеть аналитику.</div>
  </section>
 
- <section class="sections">
-  <div class="item"><h3>🔧 Обслуживание</h3><p>История ремонтов и технического обслуживания.</p></div>
-  <div class="item"><h3>⛽ Расход топлива</h3><p>Заправки, цены и средний расход.</p></div>
-  <div class="item"><h3>💰 Мои расходы</h3><p>Контроль затрат на содержание автомобиля.</p></div>
-  <div class="item"><h3>🔔 Напоминания</h3><p>Напоминания о важных событиях.</p></div>
+ <section class="panel">
+  <h2>🔔  Напоминания</h2>
+  <p class="muted">Скоро здесь появятся напоминания о замене масла, фильтров, страховке и техническом обслуживании.</p>
  </section>
 </main>
 
 <footer>AUTO LIFE © 2026 · Твой автомобиль под контролем</footer>
 
 <script>
-  const formArea=document.getElementById("formArea");
-const carCard=document.getElementById("carCard");
+const KEY="autoLifeDataV2";
+let data=load();
 
-function showForm(){
- formArea.style.display="block";
- formArea.scrollIntoView({behavior:"smooth"});
+function load(){
+ try{
+  return JSON.parse(localStorage.getItem(KEY))||{car:null,expenses:[]};
+ }catch(e){return {car:null,expenses:[]};}
 }
-function hideForm(){
- formArea.style.display="none";
+function save(){
+ localStorage.setItem(KEY,JSON.stringify(data));
+}
+function toggle(id){
+ document.getElementById(id).classList.toggle("hidden");
+}
+function money(n){
+ return Number(n).toLocaleString("ru-RU",{maximumFractionDigits:2})+" ₽";
+}
+function safe(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function localDate(d=new Date()){
+ return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
 }
 
 function renderCar(){
- const car=JSON.parse(localStorage.getItem("autoLifeCar")||"null");
- if(!car)return;
- carCard.innerHTML=`
-  <h2>🚘 ${escapeHTML(car.brand)} ${escapeHTML(car.model)}</h2>
-  <p>Год выпуска: ${escapeHTML(car.year)}</p>
-  <p>Двигатель: ${escapeHTML(car.engine||"Не указан")}</p>
-  <p>Пробег: ${Number(car.mileage).toLocaleString("ru-RU")} км</p>
-  <br><button onclick="showForm()">Изменить данные</button>
-  <button class="cancel" onclick="deleteCar()">Удалить</button>
- `;
- document.getElementById("brand").value=car.brand;
- document.getElementById("model").value=car.model;
- document.getElementById("year").value=car.year;
- document.getElementById("engine").value=car.engine;
- document.getElementById("mileage").value=car.mileage;
+ const el=document.getElementById("carInfo");
+ if(!data.car){
+  el.textContent="Автомобиль пока не добавлен.";
+  return;
+ }
+ const c=data.car;
+ el.innerHTML=`<h2>${safe(c.brand)} ${safe(c.model)}</h2>
+ <p>Год выпуска: ${safe(c.year)}</p>
+ <p>Двигатель: ${safe(c.engine||"Не указан")}</p>
+ <p>Пробег: ${Number(c.mileage).toLocaleString("ru-RU")} км</p>`;
+ document.getElementById("brand").value=c.brand;
+ document.getElementById("model").value=c.model;
+ document.getElementById("year").value=c.year;
+ document.getElementById("engine").value=c.engine||"";
+ document.getElementById("mileage").value=c.mileage;
 }
-
-function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,function(c){
-  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
- });
-}
-
-document.getElementById("carForm").addEventListener("submit",function(e){
+document.getElementById("carForm").addEventListener("submit",e=>{
  e.preventDefault();
- const car={
+ data.car={
   brand:document.getElementById("brand").value.trim(),
   model:document.getElementById("model").value.trim(),
   year:document.getElementById("year").value,
   engine:document.getElementById("engine").value.trim(),
   mileage:document.getElementById("mileage").value
  };
- localStorage.setItem("autoLifeCar",JSON.stringify(car));
- renderCar();
- hideForm();
+ save();renderCar();toggle("carForm");
  alert("Автомобиль сохранён!");
 });
 
-function deleteCar(){
- if(confirm("Удалить автомобиль?")){
-  localStorage.removeItem("autoLifeCar");
-  location.reload();
+document.getElementById("expenseDate").value=localDate();
+
+document.getElementById("expenseForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const amount=Number(document.getElementById("amount").value);
+ if(!Number.isFinite(amount)||amount<=0){
+  alert("Укажи корректную сумму.");return;
+ }
+data.expenses.push({
+  id:Date.now().toString()+"-"+Math.random().toString(36).slice(2),
+  category:document.getElementById("category").value,
+  amount:amount,
+  date:document.getElementById("expenseDate").value,
+  description:document.getElementById("description").value.trim()
+ });
+ save();renderExpenses();e.target.reset();
+ document.getElementById("expenseDate").value=localDate();
+ toggle("expenseForm");
+ alert("Расход сохранён!");
+});
+
+function deleteExpense(id){
+ if(!confirm("Удалить эту запись?"))return;
+ data.expenses=data.expenses.filter(x=>x.id!==id);
+ save();renderExpenses();
+}
+
+function renderExpenses(){
+ const now=new Date();
+ const month=localDate().slice(0,7);
+ const year=String(now.getFullYear());
+ const valid=data.expenses.filter(x=>Number.isFinite(Number(x.amount))&&Number(x.amount)>0);
+ const sum=arr=>arr.reduce((s,x)=>s+Number(x.amount),0);
+ const monthly=valid.filter(x=>x.date.startsWith(month));
+ const yearly=valid.filter(x=>x.date.startsWith(year));
+ document.getElementById("monthTotal").textContent=money(sum(monthly));
+ document.getElementById("yearTotal").textContent=money(sum(yearly));
+ document.getElementById("allTotal").textContent=money(sum(valid));
+ document.getElementById("countTotal").textContent=valid.length;
+
+ const list=document.getElementById("expenseList");
+ const sorted=[...valid].sort((a,b)=>b.date.localeCompare(a.date));
+ if(!sorted.length){
+  list.textContent="Пока расходов нет. Добавь первую запись.";
+ }else{
+  list.innerHTML=sorted.map(x=>`
+   <div class="expense">
+    <div>
+     <strong>${safe(x.category)}</strong>
+     <small>${safe(x.date)}${x.description?" · "+safe(x.description):""}</small>
+    </div>
+    <div style="text-align:right">
+     <strong>${money(x.amount)}</strong><br>
+     <button class="danger" onclick="deleteExpense('${safe(x.id)}')">Удалить</button>
+    </div>
+   </div>`).join("");
+ }
+
+ const totals={};
+ valid.forEach(x=>totals[x.category]=(totals[x.category]||0)+Number(x.amount));
+ const analytics=document.getElementById("analytics");
+ const categories=Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+ if(!categories.length){
+  analytics.textContent="Добавь расходы, чтобы увидеть аналитику.";
+ }else{
+  analytics.innerHTML=categories.map(([name,value])=>`
+   <div style="margin:13px 0">
+    <div style="display:flex;justify-content:space-between;gap:10px">
+     <span>${safe(name)}</span><strong>${money(value)}</strong>
+    </div>
+    <div style="height:7px;background:#293442;border-radius:10px;margin-top:7px;overflow:hidden">
+     <div style="height:100%;width:${sum(valid)?value/sum(valid)*100:0}%;background:#258de0"></div>
+    </div>
+   </div>`).join("");
  }
 }
 
 renderCar();
+renderExpenses();
 </script>
 </body>
 </html>

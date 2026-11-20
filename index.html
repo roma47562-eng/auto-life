@@ -943,5 +943,48 @@ renderExpenses();
   renderDashboard();
 })();
 </script>
-</body>
+</body
+  <section id="dashboard" style="padding:20px;margin:15px auto;max-width:900px;background:#151922;color:white;border:1px solid #303846;border-radius:18px;font-family:Arial,sans-serif">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="color:#8e9aaa;font-size:12px;letter-spacing:2px">AUTO LIFE</div>
+      <h1 style="margin:8px 0">Твой автомобиль</h1>
+      <p style="color:#9ba8b8;margin:0">Твой автомобиль под контролем</p>
+    </div>
+    <div style="font-size:38px">🚘</div>
+  </div>
+
+  <div style="margin-top:22px;padding:18px;background:#202936;border-radius:14px">
+    <div style="color:#9ba8b8;font-size:12px">МОЙ АВТОМОБИЛЬ</div>
+    <h2 id="dashCar" style="margin:8px 0">Добавь автомобиль</h2>
+    <p id="dashDetails" style="color:#aeb9c8">Информация появится после добавления автомобиля</p>
+    <div style="font-size:13px;color:#9ba8b8">Текущий пробег</div>
+    <div id="dashMileage" style="font-size:27px;font-weight:bold;margin-top:5px">—</div>
+  </div>
+
+  <h3 style="margin-top:24px">Финансы</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+    <div style="background:#202936;padding:15px;border-radius:12px">
+      <div style="color:#9ba8b8;font-size:12px">За месяц</div>
+      <div id="dashMonth" style="font-size:21px;font-weight:bold;margin-top:8px">0 ₽</div>
+    </div>
+    <div style="background:#202936;padding:15px;border-radius:12px">
+      <div style="color:#9ba8b8;font-size:12px">Всего потрачено</div>
+      <div id="dashTotal" style="font-size:21px;font-weight:bold;margin-top:8px">0 ₽</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px">Ближайшие напоминания</h3>
+  <div id="dashReminders" style="background:#202936;padding:15px;border-radius:12px">
+    Пока напоминаний нет
+  </div>
+
+  <h3 style="margin-top:24px">Быстрый доступ</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+    <a href="#maintenance-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">🔧 Обслуживание</a>
+    <a href="#fuel-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">⛽ Заправки</a>
+    <a href="#analytics-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">📊 Аналитика</a>
+    <a href="#reminders-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">🔔 Напоминания</a>
+  </div>
+</section>
 </html>

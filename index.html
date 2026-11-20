@@ -672,5 +672,148 @@ renderExpenses();
   renderReminders();
 })();
 </script>
+ <section class="card" id="analytics-section">
+  <h2>📊 AUTO LIFE ANALYTICS</h2>
+  <p>Полная финансовая картина твоего автомобиля</p>
+
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+    <div style="padding:14px;border:1px solid #444;border-radius:12px">
+      <small>За этот месяц</small>
+      <h2 id="aMonth">0 ₽</h2>
+    </div>
+    <div style="padding:14px;border:1px solid #444;border-radius:12px">
+      <small>За этот год</small>
+      <h2 id="aYear">0 ₽</h2>
+    </div>
+    <div style="padding:14px;border:1px solid #444;border-radius:12px">
+      <small>Всего расходов</small>
+      <h2 id="aAll">0 ₽</h2>
+    </div>
+    <div style="padding:14px;border:1px solid #444;border-radius:12px">
+      <small>Среднее за месяц</small>
+      <h2 id="aAverage">0 ₽</h2>
+    </div>
+  </div>
+
+  <h3>Расходы по категориям</h3>
+  <div id="aCategories"></div>
+
+  <h3>Структура затрат</h3>
+  <div id="aBars"></div>
+
+  <p style="color:#999;font-size:12px">
+    Учитываются записи расходов, обслуживания и заправок.
+    Не добавляй одну и ту же покупку одновременно в разные разделы,
+    иначе она посчитается дважды.
+  </p>
+</section>
+
+<script>
+(function () {
+  const KEY = "autoLifeDataV2";
+  const money = n => Math.round(n).toLocaleString("ru-RU") + " ₽";
+
+  function getData() {
+    try {
+      return JSON.parse(localStorage.getItem(KEY)) || {};
+    } catch {
+      return {};
+    }
+  }
+
+  function renderAnalytics() {
+    const data = getData();
+    const expenses = Array.isArray(data.expenses) ? data.expenses : [];
+    const maintenance = Array.isArray(data.maintenance) ? data.maintenance : [];
+    const fuel = Array.isArray(data.fuel) ? data.fuel : [];
+
+    const entries = [];
+
+    expenses.forEach(x => entries.push({
+      date: x.date,
+      category: x.category || "Другие расходы",
+      amount: Number(x.amount) || 0
+    }));
+
+    maintenance.forEach(x => entries.push({
+      date: x.date,
+      category: "Обслуживание",
+      amount: Number(x.amount) || 0
+    }));
+
+    fuel.forEach(x => entries.push({
+      date: x.date,
+      category: "Топливо",
+      amount: Number(x.cost) || 0
+    }));
+
+    const now = new Date();
+    const month = now.getFullYear() + "-" +
+      String(now.getMonth() + 1).padStart(2, "0");
+    const year = String(now.getFullYear());
+
+    const all = entries.reduce((s, x) => s + x.amount, 0);
+    const monthTotal = entries
+      .filter(x => String(x.date || "").startsWith(month))
+      .reduce((s, x) => s + x.amount, 0);
+    const yearTotal = entries
+      .filter(x => String(x.date || "").startsWith(year))
+      .reduce((s, x) => s + x.amount, 0);
+
+    const dates = entries.map(x => x.date).filter(Boolean).sort();
+    let average = 0;
+
+    if (dates.length) {
+      const first = new Date(dates[0] + "T00:00:00");
+      const months = Math.max(1,
+        (now.getFullYear() - first.getFullYear()) * 12 +
+        now.getMonth() - first.getMonth() + 1
+      );
+      average = all / months;
+    }
+
+    document.getElementById("aMonth").textContent = money(monthTotal);
+    document.getElementById("aYear").textContent = money(yearTotal);
+    document.getElementById("aAll").textContent = money(all);
+    document.getElementById("aAverage").textContent = money(average);
+
+    const categories = {};
+    entries.forEach(x => {
+      categories[x.category] = (categories[x.category] || 0) + x.amount;
+    });
+
+    const sorted = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+    const max = sorted.length ? sorted[0][1] : 1;
+
+    document.getElementById("aCategories").innerHTML =
+      sorted.length ? sorted.map(([name, amount]) => `
+        <div style="margin:12px 0">
+          <div style="display:flex;justify-content:space-between;gap:8px">
+            <strong>${escapeHTML(name)}</strong>
+            <strong>${money(amount)}</strong>
+          </div>
+          <div style="height:9px;background:#333;border-radius:10px;overflow:hidden;margin-top:6px">
+          <div style="height:100%;width:${amount / max * 100}%;background:#4c9aff;border-radius:10px"></div>
+          </div>
+        </div>
+      `).join("") : "<p>Пока нет расходов для анализа</p>";
+
+    const total = all || 1;
+    document.getElementById("aBars").innerHTML =
+      sorted.length ? sorted.map(([name, amount]) => `
+        <p>${escapeHTML(name)} — ${(amount / total * 100).toFixed(1)}%</p>
+      `).join("") : "<p>Добавь первые расходы</p>";
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  renderAnalytics();
+})();
+</script>
 </body>
 </html>

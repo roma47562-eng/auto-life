@@ -376,5 +376,155 @@ renderExpenses();
   renderMaintenance();
 })();
 </script>
+ <section class="card" id="fuel-section">
+  <h2>⛽ Учёт топлива</h2>
+  <p>Заправки и расход бензина</p>
+
+  <form id="fuelForm">
+    <input id="fuelDate" type="date" required>
+    <input id="fuelMileage" type="number" min="1" placeholder="Пробег, км" required>
+    <input id="fuelLiters" type="number" min="0.01" step="0.01" placeholder="Литры" required>
+    <input id="fuelPrice" type="number" min="0.01" step="0.01" placeholder="Цена за литр, ₽" required>
+    <button type="submit">Добавить заправку</button>
+  </form>
+
+  <div style="margin-top:20px;padding:15px;border:1px solid #444;border-radius:12px">
+    <p>Всего потрачено на топливо:</p>
+    <h2 id="fuelTotal">0 ₽</h2>
+    <p>Заправлено литров: <strong id="fuelLitersTotal">0</strong></p>
+    <p>Средняя стоимость литра: <strong id="fuelAveragePrice">0 ₽</strong></p>
+    <p>Средний расход: <strong id="fuelConsumption">Недостаточно данных</strong></p>
+  </div>
+
+  <h3>История заправок</h3>
+  <div id="fuelList"></div>
+</section>
+
+<script>
+(function () {
+  const KEY = "autoLifeDataV2";
+
+  function getData() {
+    try {
+      return JSON.parse(localStorage.getItem(KEY)) || {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveData(data) {
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }
+
+  function safe(value) {
+    return String(value).replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  function renderFuel() {
+    const data = getData();
+    const records = Array.isArray(data.fuel) ? data.fuel : [];
+
+    const total = records.reduce((s, x) => s + Number(x.cost || 0), 0);
+    const liters = records.reduce((s, x) => s + Number(x.liters || 0), 0);
+    const average = liters ? total / liters : 0;
+
+    document.getElementById("fuelTotal").textContent =
+      total.toLocaleString("ru-RU", {maximumFractionDigits: 2}) + " ₽";
+
+    document.getElementById("fuelLitersTotal").textContent =
+      liters.toLocaleString("ru-RU", {maximumFractionDigits: 2}) + " л";
+
+    document.getElementById("fuelAveragePrice").textContent =
+      average.toLocaleString("ru-RU", {maximumFractionDigits: 2}) + " ₽";
+
+    const sorted = [...records].sort(
+      (a, b) => Number(a.mileage) - Number(b.mileage)
+    );
+
+    let consumption = "Недостаточно данных";
+
+    if (sorted.length >= 2) {
+      const first = sorted[0];
+      const last = sorted[sorted.length - 1];
+      const distance = Number(last.mileage) - Number(first.mileage);
+
+      // Для точного расхода нужны две последовательные заправки
+      // с полным баком. Пока показываем ориентировочную оценку.
+      if (distance > 0) {
+        const usedLiters = sorted.slice(1).reduce(
+          (s, x) => s + Number(x.liters || 0), 0
+        );
+        consumption =
+          (usedLiters / distance * 100).toFixed(1) + " л/100 км (оценка)";
+      }
+    }
+
+    document.getElementById("fuelConsumption").textContent = consumption;
+
+    const list = document.getElementById("fuelList");
+
+    if (!records.length) {
+      list.innerHTML = "<p>Заправок пока нет</p>";
+      return;
+    }
+
+    list.innerHTML = [...records].map(x => `
+      <div style="padding:12px;margin:10px 0;border:1px solid #444;border-radius:10px">
+        <strong>${safe(x.date)}</strong>
+        <p>Пробег: ${Number(x.mileage).toLocaleString("ru-RU")} км</p>
+        <p>Топливо: ${Number(x.liters)} л</p>
+        <p>Цена за литр: ${Number(x.price).toLocaleString("ru-RU")} ₽</p>
+        <p>Итого: ${Number(x.cost).toLocaleString("ru-RU")} ₽</p>
+        <button type="button" onclick="deleteFuel('${safe(x.id)}')">Удалить</button>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("fuelForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const data = getData();
+    if (!Array.isArray(data.fuel)) data.fuel = [];
+
+    const liters = Number(document.getElementById("fuelLiters").value);
+    const price = Number(document.getElementById("fuelPrice").value);
+   const mileage = Number(document.getElementById("fuelMileage").value);
+
+    const previous = data.fuel.length
+      ? Math.max(...data.fuel.map(x => Number(x.mileage)))
+      : 0;
+
+    if (mileage < previous) {
+      alert("Пробег не может быть меньше предыдущей заправки.");
+      return;
+    }
+
+    data.fuel.unshift({
+      id: String(Date.now()),
+      date: document.getElementById("fuelDate").value,
+      mileage,
+      liters,
+      price,
+      cost: liters * price
+    });
+
+    saveData(data);
+    this.reset();
+    renderFuel();
+  });
+
+  window.deleteFuel = function(id) {
+    const data = getData();
+    data.fuel = (data.fuel || []).filter(x => x.id !== id);
+    saveData(data);
+    renderFuel();
+  };
+
+  renderFuel();
+})();
+</script>
 </body>
 </html>

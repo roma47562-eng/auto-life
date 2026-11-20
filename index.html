@@ -270,5 +270,111 @@ function renderExpenses(){
 renderCar();
 renderExpenses();
 </script>
+ <section class="card" id="maintenance-section">
+  <h2>🔧 Обслуживание автомобиля</h2>
+  <p>История ТО и ремонтов</p>
+
+  <form id="maintenanceForm">
+    <input id="mType" placeholder="Что делали? Например: Замена масла" required>
+    <input id="mMileage" type="number" placeholder="Пробег, км" required>
+    <input id="mAmount" type="number" placeholder="Стоимость, ₽" required>
+    <input id="mDate" type="date" required>
+    <textarea id="mNote" placeholder="Комментарий (необязательно)"></textarea>
+    <button type="submit">Добавить обслуживание</button>
+  </form>
+
+  <h3>История обслуживания</h3>
+  <div id="maintenanceList"></div>
+  <h3 id="maintenanceTotal">Всего на обслуживание: 0 ₽</h3>
+</section>
+
+<script>
+(function () {
+  const KEY = "autoLifeDataV2";
+
+  function getData() {
+    try {
+      return JSON.parse(localStorage.getItem(KEY)) || {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveData(data) {
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }
+
+  function renderMaintenance() {
+    const data = getData();
+    const records = Array.isArray(data.maintenance)
+      ? data.maintenance : [];
+
+    const list = document.getElementById("maintenanceList");
+    const total = records.reduce(
+      (sum, item) => sum + Number(item.amount || 0), 0
+    );
+
+    document.getElementById("maintenanceTotal").textContent =
+      "Всего на обслуживание: " +
+      total.toLocaleString("ru-RU") + " ₽";
+
+    if (!records.length) {
+      list.innerHTML = "<p>Записей пока нет</p>";
+      return;
+    }
+
+    list.innerHTML = records.map(item => `
+      <div style="padding:12px;margin:10px 0;border:1px solid #444;border-radius:10px">
+        <strong>${escapeHTML(item.type)}</strong>
+        <p>Пробег: ${Number(item.mileage).toLocaleString("ru-RU")} км</p>
+        <p>Стоимость: ${Number(item.amount).toLocaleString("ru-RU")} ₽</p>
+        <p>Дата: ${escapeHTML(item.date)}</p>
+        <p>${escapeHTML(item.note || "")}</p>
+        <button type="button" onclick="deleteMaintenance('${item.id}')">
+          Удалить
+        </button>
+      </div>
+    `).join("");
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    }[char]));
+  }
+
+  document.getElementById("maintenanceForm")
+    .addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const data = getData();
+      if (!Array.isArray(data.maintenance)) data.maintenance = [];
+
+      data.maintenance.unshift({
+        id: String(Date.now()),
+        type: document.getElementById("mType").value.trim(),
+        mileage: document.getElementById("mMileage").value,
+        amount: document.getElementById("mAmount").value,
+        date: document.getElementById("mDate").value,
+        note: document.getElementById("mNote").value.trim()
+      });
+
+      saveData(data);
+      this.reset();
+      renderMaintenance();
+    });
+
+  window.deleteMaintenance = function(id) {
+    const data = getData();
+    data.maintenance = (data.maintenance || [])
+      .filter(item => item.id !== id);
+    saveData(data);
+    renderMaintenance();
+  };
+
+  renderMaintenance();
+})();
+</script>
 </body>
 </html>

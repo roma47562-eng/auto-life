@@ -1,237 +1,747 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0e13">
 <title>AUTO LIFE — Автомобильный помощник</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0b0e13;color:#f4f5f7;font-family:Arial,sans-serif}
-header{padding:20px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #252e3b}
+
+body{
+ background:#0b0e13;
+ color:#f4f5f7;
+ font-family:Arial,sans-serif;
+}
+
+header{
+ padding:18px 6%;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ border-bottom:1px solid #252e3b;
+ background:#10151d;
+}
+
 .logo{font-size:24px;font-weight:800;letter-spacing:1px}
 .logo span{color:#39a7ff}
-main{max-width:1100px;margin:35px auto;padding:0 18px}
-h1{font-size:28px;margin-bottom:9px}
-.sub{color:#929ba9;margin-bottom:25px}
-button{background:#258de0;color:white;border:0;border-radius:9px;padding:12px 17px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.4;cursor:not-allowed}
+
+header small{color:#48cf94;font-size:12px}
+
+main{max-width:1100px;margin:28px auto;padding:0 18px}
+
+h1{font-size:27px;margin-bottom:9px}
+h2{font-size:19px;margin-bottom:14px}
+h3{font-size:16px;margin:20px 0 12px}
+
+.sub,.muted{color:#929ba9;line-height:1.6}
+
+.panel{
+ background:#151b24;
+ border:1px solid #293442;
+ border-radius:15px;
+ padding:21px;
+ margin-bottom:19px;
+}
+
+.sectionTitle{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:15px;
+}
+
+button{
+ background:#258de0;
+ color:white;
+ border:0;
+ border-radius:9px;
+ padding:12px 16px;
+ font-weight:bold;
+ cursor:pointer;
+}
+
+button:active{opacity:.8}
 .secondary{background:#303947}
 .danger{background:#9c343b}
-.panel{background:#151b24;border:1px solid #293442;border-radius:15px;padding:22px;margin-bottom:20px}
-.panel h2{font-size:19px;margin-bottom:17px}
-.carInfo p{color:#bdc6d2;margin:8px 0}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
-.stat{background:#151b24;border:1px solid #252e3b;border-radius:13px;padding:18px}
-.stat small{color:#9ba6b5}
-.stat h2{font-size:22px;margin-top:12px}
-.blue{color:#39a7ff}
-.green{color:#48cf94}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
-label{display:block;color:#aeb9c8;font-size:13px;margin:13px 0 7px}
-input,select,textarea{width:100%;padding:13px;background:#0c1119;color:white;border:1px solid #344255;border-radius:8px;font-size:15px}
-input:focus,select:focus{outline:1px solid #258de0}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+
+label{
+ display:block;
+ color:#aeb9c8;
+ font-size:13px;
+ margin:12px 0 7px;
+}
+
+input,select,textarea{
+ width:100%;
+ padding:13px;
+ background:#0c1119;
+ color:white;
+ border:1px solid #344255;
+ border-radius:8px;
+ font-size:15px;
+}
+
+input:focus,select:focus,textarea:focus{
+ outline:1px solid #258de0;
+}
+
+textarea{min-height:75px;resize:vertical}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+}
+
+.actions{
+ display:flex;
+ gap:9px;
+ flex-wrap:wrap;
+ margin-top:15px;
+}
+
 .hidden{display:none!important}
-.expense{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:15px 0;border-bottom:1px solid #293442}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:11px;
+ margin:20px 0;
+}
+
+.stat{
+ background:#151b24;
+ border:1px solid #252e3b;
+ border-radius:13px;
+ padding:15px;
+ min-width:0;
+}
+
+.stat small{color:#9ba6b5;font-size:12px}
+.stat h2{font-size:20px;margin-top:10px;overflow-wrap:anywhere}
+.blue{color:#39a7ff}
+
+.carInfo p{color:#bdc6d2;margin:8px 0}
+
+.expense{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ padding:14px 0;
+ border-bottom:1px solid #293442;
+}
+
 .expense:last-child{border-bottom:0}
 .expense small{display:block;color:#929ba9;margin-top:5px}
-.expense strong{white-space:nowrap}
-.expense button{padding:8px 11px}
-.muted{color:#929ba9;line-height:1.6}
-.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
-footer{text-align:center;color:#687383;padding:35px 10px}
+.expense strong{overflow-wrap:anywhere}
+.expense button{padding:8px 10px;margin-top:7px}
+
+.record{
+ padding:14px;
+ margin:10px 0;
+ border:1px solid #344255;
+ border-radius:11px;
+ background:#111721;
+}
+
+.record p{color:#aeb9c8;margin:7px 0;font-size:14px}
+
+.bar{
+ height:8px;
+ background:#293442;
+ border-radius:10px;
+ overflow:hidden;
+ margin-top:7px;
+}
+
+.bar div{
+ height:100%;
+ background:#258de0;
+ border-radius:10px;
+}
+
+.dashboard{
+ background:linear-gradient(145deg,#172333,#111721);
+ border:1px solid #30445b;
+ border-radius:17px;
+ padding:21px;
+ margin:20px 0;
+}
+
+.dashTop{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
+
+.dashBrand{
+ color:#39a7ff;
+ font-size:12px;
+ letter-spacing:2px;
+ font-weight:bold;
+}
+
+.carCard{
+ margin-top:20px;
+ padding:17px;
+ background:#202936;
+ border-radius:13px;
+}
+
+.carCard p{color:#aeb9c8;margin-top:8px}
+
+.dashStats{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;
+ margin-top:13px;
+}
+
+.dashStat{
+ background:#202936;
+ border-radius:12px;
+ padding:14px;
+}
+
+.dashStat small{color:#9ba8b8;font-size:12px}
+.dashStat strong{display:block;font-size:20px;margin-top:8px}
+
+.quickLinks{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;
+ margin-top:12px;
+}
+
+.quickLinks a{
+ padding:14px;
+ background:#202936;
+ border-radius:10px;
+ color:white;
+ text-decoration:none;
+ font-size:14px;
+}
+
+.quickLinks a:active{background:#303d4d}
+
+footer{
+ text-align:center;
+ color:#687383;
+ padding:30px 10px;
+ font-size:13px;
+}
+
 @media(max-width:700px){
-.stats{grid-template-columns:repeat(2,1fr)}
-.grid{grid-template-columns:1fr}
-h1{font-size:24px}
-.expense{align-items:flex-start}
+ main{margin:22px auto}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .grid{grid-template-columns:1fr}
+ h1{font-size:23px}
+ .panel{padding:16px}
+ .sectionTitle{align-items:flex-start}
+ .sectionTitle button{font-size:12px;padding:10px}
+ .expense{align-items:flex-start}
+ .stat h2{font-size:18px}
 }
 </style>
 </head>
+
 <body>
+
 <header>
  <div class="logo">AUTO <span>LIFE</span></div>
- <span style="color:#48cf94;font-size:12px">● Личный кабинет</span>
+ <small>● Личный кабинет</small>
 </header>
 
 <main>
- <h1>Твой автомобиль под контролем</h1>
- <p class="sub">Вся информация о машине и расходах в одном месте.</p>
 
- <section class="panel">
-  <div class="sectionTitle">
-   <h2>🚘  Мой автомобиль</h2>
-   <button onclick="toggle('carForm')">+ Добавить / изменить</button>
+<h1>Твой автомобиль под контролем</h1>
+<p class="sub">Вся информация о машине, обслуживании и расходах в одном месте.</p>
+
+<!-- ГЛАВНАЯ ПАНЕЛЬ -->
+<section class="dashboard" id="dashboard">
+
+ <div class="dashTop">
+  <div>
+   <div class="dashBrand">AUTO LIFE</div>
+   <h2 style="font-size:25px;margin-top:8px">Мой автомобиль</h2>
+   <p class="muted">Твой автомобиль под контролем</p>
   </div>
-  <div id="carInfo" class="carInfo muted">Автомобиль пока не добавлен.</div>
-
-  <form id="carForm" class="hidden">
-   <div class="grid">
-    <div><label>Марка</label><input id="brand" required placeholder="Honda"></div>
-    <div><label>Модель</label><input id="model" required placeholder="Civic"></div>
-    <div><label>Год выпуска</label><input id="year" type="number" min="1950" max="2027" required placeholder="2002"></div>
-    <div><label>Двигатель</label><input id="engine" placeholder="1.7 D17A1"></div>
-    <div><label>Пробег (км)</label><input id="mileage" type="number" min="0" required placeholder="305000"></div>
-   </div>
-   <div class="actions">
-    <button type="submit">Сохранить автомобиль</button>
-    <button type="button" class="secondary" onclick="toggle('carForm')">Отмена</button>
-   </div>
-  </form>
- </section>
-
- <div class="stats">
-  <div class="stat"><small>Расходы за месяц</small><h2 class="blue" id="monthTotal">0 ₽</h2></div>
-  <div class="stat"><small>Расходы за год</small><h2 id="yearTotal">0 ₽</h2></div>
-  <div class="stat"><small>Всего расходов</small><h2 id="allTotal">0 ₽</h2></div>
-<div class="stat"><small>Количество записей</small><h2 id="countTotal">0</h2></div>
+  <div style="font-size:38px">🚘</div>
  </div>
 
- <section class="panel">
-  <div class="sectionTitle">
-   <h2>💰  Мои расходы</h2>
-   <button onclick="toggle('expenseForm')">+ Добавить расход</button>
+ <div class="carCard">
+  <div style="color:#9ba8b8;font-size:12px">МОЙ АВТОМОБИЛЬ</div>
+  <h2 id="dashCar" style="margin:9px 0">Добавь автомобиль</h2>
+  <p id="dashDetails">Информация появится после добавления автомобиля</p>
+  <p style="font-size:12px;margin-top:16px">ТЕКУЩИЙ ПРОБЕГ</p>
+  <strong id="dashMileage" style="font-size:27px">—</strong>
+ </div>
+
+ <h3>Финансы</h3>
+ <div class="dashStats">
+  <div class="dashStat">
+   <small>Расходы за месяц</small>
+   <strong id="dashMonth">0 ₽</strong>
+  </div>
+  <div class="dashStat">
+   <small>Всего потрачено</small>
+   <strong id="dashTotal">0 ₽</strong>
+  </div>
+ </div>
+
+ <h3>Ближайшие напоминания</h3>
+ <div id="dashReminders" class="carCard">Пока напоминаний нет</div>
+
+ <h3>Быстрый доступ</h3>
+ <div class="quickLinks">
+  <a href="#car-section">🚘 Мой автомобиль</a>
+  <a href="#expenses-section">💰 Расходы</a>
+  <a href="#maintenance-section">🔧 Обслуживание</a>
+  <a href="#fuel-section">⛽ Заправки</a>
+  <a href="#reminders-section">🔔 Напоминания</a>
+  <a href="#analytics-section">📊 Аналитика</a>
+ </div>
+
+</section>
+
+<!-- АВТОМОБИЛЬ -->
+<section class="panel" id="car-section">
+ <div class="sectionTitle">
+  <h2>🚘 Мой автомобиль</h2>
+  <button onclick="toggle('carForm')">Изменить</button>
+ </div>
+
+ <div id="carInfo" class="carInfo muted">Автомобиль пока не добавлен.</div>
+
+ <form id="carForm" class="hidden">
+  <div class="grid">
+   <div>
+    <label>Марка</label>
+    <input id="brand" required placeholder="Honda">
+   </div>
+   <div>
+    <label>Модель</label>
+    <input id="model" required placeholder="Civic">
+   </div>
+   <div>
+    <label>Год выпуска</label>
+    <input id="year" type="number" min="1950" max="2027" required placeholder="2002">
+   </div>
+   <div>
+    <label>Двигатель</label>
+    <input id="engine" placeholder="1.7 D17A1">
+   </div>
+   <div>
+    <label>Пробег (км)</label>
+    <input id="mileage" type="number" min="0" required placeholder="305000">
+   </div>
+  </div>
+  <div class="actions">
+   <button type="submit">Сохранить автомобиль</button>
+   <button type="button" class="secondary" onclick="toggle('carForm')">Отмена</button>
+  </div>
+ </form>
+</section>
+
+<!-- СТАТИСТИКА -->
+<div class="stats">
+ <div class="stat">
+  <small>За месяц</small>
+  <h2 class="blue" id="monthTotal">0 ₽</h2>
+ </div>
+ <div class="stat">
+  <small>За год</small>
+  <h2 id="yearTotal">0 ₽</h2>
+ </div>
+ <div class="stat">
+  <small>Всего расходов</small>
+  <h2 id="allTotal">0 ₽</h2>
+ </div>
+ <div class="stat">
+  <small>Количество записей</small>
+  <h2 id="countTotal">0</h2>
+ </div>
+</div>
+
+<!-- РАСХОДЫ -->
+<section class="panel" id="expenses-section">
+ <div class="sectionTitle">
+  <h2>💰 Мои расходы</h2>
+  <button onclick="toggle('expenseForm')">+ Добавить</button>
+ </div>
+
+ <form id="expenseForm" class="hidden">
+  <div class="grid">
+   <div>
+    <label>Категория</label>
+    <select id="category" required>
+     <option value="Бензин">⛽ Бензин</option>
+     <option value="Ремонт">🔧 Ремонт</option>
+     <option value="Масло и фильтры">🛢️ Масло и фильтры</option>
+     <option value="Шины и диски">🛞 Шины и диски</option>
+     <option value="Мойка">🧽 Мойка</option>
+     <option value="Страховка">📄 Страховка</option>
+     <option value="Налоги">💳 Налоги</option>
+     <option value="Штрафы">🚨 Штрафы</option>
+     <option value="Другое">📦 Другое</option>
+    </select>
+   </div>
+   <div>
+    <label>Сумма (₽)</label>
+    <input id="amount" type="number" min="0.01" step="0.01" required placeholder="3500">
+   </div>
+   <div>
+    <label>Дата</label>
+    <input id="expenseDate" type="date" required>
+   </div>
+   <div>
+    <label>Описание</label>
+    <input id="description" placeholder="Например, АИ-95">
+   </div>
+  </div>
+  <div class="actions">
+   <button type="submit">Сохранить расход</button>
+   <button type="button" class="secondary" onclick="toggle('expenseForm')">Отмена</button>
+  </div>
+ </form>
+
+ <div id="expenseList" class="muted">Пока расходов нет.</div>
+</section>
+
+<!-- ОБСЛУЖИВАНИЕ -->
+<section class="panel" id="maintenance-section">
+ <h2>🔧 Обслуживание автомобиля</h2>
+ <p class="muted">История ТО и ремонтов</p>
+
+ <form id="maintenanceForm">
+  <label>Что делали?</label>
+  <input id="mType" required placeholder="Например: Замена масла">
+
+  <div class="grid">
+   <div>
+    <label>Пробег (км)</label>
+    <input id="mMileage" type="number" min="0" required>
+   </div>
+   <div>
+    <label>Стоимость (₽)</label>
+    <input id="mAmount" type="number" min="0" step="0.01" required>
+   </div>
   </div>
 
-  <form id="expenseForm" class="hidden">
-   <div class="grid">
-    <div>
-     <label>Категория</label>
-     <select id="category" required>
-      <option value="Бензин">⛽  Бензин</option>
-      <option value="Ремонт">🔧  Ремонт</option>
-      <option value="Масло и фильтры">🛢️  Масло и фильтры</option>
-      <option value="Шины и диски">🛞  Шины и диски</option>
-      <option value="Мойка">🧽  Мойка</option>
-      <option value="Страховка">📄  Страховка</option>
-      <option value="Налоги">💳  Налоги</option>
-      <option value="Штрафы">🚨  Штрафы</option>
-      <option value="Другое">📦  Другое</option>
-     </select>
-    </div>
-    <div><label>Сумма (₽)</label><input id="amount" type="number" min="1" step="0.01" required placeholder="3500"></div>
-    <div><label>Дата</label><input id="expenseDate" type="date" required></div>
-    <div><label>Описание</label><input id="description" placeholder="Например, АИ-95"></div>
+  <label>Дата</label>
+  <input id="mDate" type="date" required>
+
+  <label>Комментарий</label>
+  <textarea id="mNote" placeholder="Дополнительная информация"></textarea>
+
+  <div class="actions">
+   <button type="submit">Добавить обслуживание</button>
+  </div>
+ </form>
+
+ <h3>История обслуживания</h3>
+ <div id="maintenanceList"></div>
+ <h3 id="maintenanceTotal">Всего на обслуживание: 0 ₽</h3>
+</section>
+
+<!-- ТОПЛИВО -->
+<section class="panel" id="fuel-section">
+ <h2>⛽ Учёт топлива</h2>
+ <p class="muted">Заправки и примерный расход бензина</p>
+
+ <form id="fuelForm">
+  <label>Дата</label>
+  <input id="fuelDate" type="date" required>
+
+  <div class="grid">
+   <div>
+    <label>Пробег (км)</label>
+    <input id="fuelMileage" type="number" min="0" required>
    </div>
-   <div class="actions">
-    <button type="submit">Сохранить расход</button>
-    <button type="button" class="secondary" onclick="toggle('expenseForm')">Отмена</button>
+   <div>
+    <label>Количество литров</label>
+    <input id="fuelLiters" type="number" min="0.01" step="0.01" required>
    </div>
-  </form>
+   <div>
+    <label>Цена за литр (₽)</label>
+    <input id="fuelPrice" type="number" min="0.01" step="0.01" required>
+   </div>
+  </div>
 
-  <div id="expenseList" class="muted">Пока расходов нет. Добавь первую запись.</div>
- </section>
+  <div class="actions">
+   <button type="submit">Добавить заправку</button>
+  </div>
+ </form>
 
- <section class="panel">
-  <h2>📊  Аналитика расходов</h2>
-  <div id="analytics" class="muted">Добавь расходы, чтобы увидеть аналитику.</div>
- </section>
+ <div class="carCard">
+  <p>Всего потрачено на топливо</p>
+  <h2 id="fuelTotal">0 ₽</h2>
+  <p>Заправлено литров: <strong id="fuelLitersTotal">0</strong></p>
+  <p>Средняя стоимость литра: <strong id="fuelAveragePrice">0 ₽</strong></p>
+  <p>Средний расход: <strong id="fuelConsumption">Недостаточно данных</strong></p>
+ </div>
 
- <section class="panel">
-  <h2>🔔  Напоминания</h2>
-  <p class="muted">Скоро здесь появятся напоминания о замене масла, фильтров, страховке и техническом обслуживании.</p>
- </section>
+ <h3>История заправок</h3>
+ <div id="fuelList"></div>
+</section>
+
+<!-- НАПОМИНАНИЯ -->
+<section class="panel" id="reminders-section">
+ <h2>🔔 Напоминания</h2>
+ <p class="muted">Следи за обслуживанием автомобиля</p>
+
+ <form id="reminderForm">
+  <label>Название напоминания</label>
+  <input id="rTitle" required placeholder="Например: Замена масла">
+
+  <label>Дата напоминания</label>
+  <input id="rDate" type="date">
+
+  <label>Пробег для напоминания (км)</label>
+  <input id="rMileage" type="number" min="1" placeholder="310000">
+
+  <div class="actions">
+   <button type="submit">Добавить напоминание</button>
+  </div>
+ </form>
+
+ <h3>Мои напоминания</h3>
+ <div id="reminderList"></div>
+</section>
+
+<!-- АНАЛИТИКА -->
+<section class="panel" id="analytics-section">
+ <h2>📊 AUTO LIFE ANALYTICS</h2>
+ <p class="muted">Полная финансовая картина твоего автомобиля</p>
+
+ <div class="stats">
+  <div class="stat">
+   <small>За месяц</small>
+   <h2 id="aMonth">0 ₽</h2>
+  </div>
+  <div class="stat">
+   <small>За год</small>
+   <h2 id="aYear">0 ₽</h2>
+  </div>
+  <div class="stat">
+   <small>Всего</small>
+   <h2 id="aAll">0 ₽</h2>
+  </div>
+  <div class="stat">
+   <small>В среднем за месяц</small>
+   <h2 id="aAverage">0 ₽</h2>
+  </div>
+ </div>
+
+ <h3>Расходы по категориям</h3>
+ <div id="aCategories"></div>
+
+ <h3>Структура затрат</h3>
+ <div id="aBars"></div>
+
+ <p class="muted" style="font-size:12px;margin-top:18px">
+  Учитываются расходы, обслуживание и заправки.
+  Не добавляй одну покупку одновременно в разные разделы,
+  иначе она будет посчитана дважды.
+ </p>
+</section>
+
 </main>
 
 <footer>AUTO LIFE © 2026 · Твой автомобиль под контролем</footer>
 
 <script>
-const KEY="autoLifeDataV2";
-let data=load();
+"use strict";
 
-function load(){
+const KEY = "autoLifeDataV2";
+
+function loadData(){
  try{
-  return JSON.parse(localStorage.getItem(KEY))||{car:null,expenses:[]};
- }catch(e){return {car:null,expenses:[]};}
+  const saved = JSON.parse(localStorage.getItem(KEY)) || {};
+  return {
+   car: saved.car || null,
+   expenses: Array.isArray(saved.expenses) ? saved.expenses : [],
+   maintenance: Array.isArray(saved.maintenance) ? saved.maintenance : [],
+   fuel: Array.isArray(saved.fuel) ? saved.fuel : [],
+   reminders: Array.isArray(saved.reminders) ? saved.reminders : []
+  };
+ }catch(e){
+  return {car:null,expenses:[],maintenance:[],fuel:[],reminders:[]};
+ }
 }
-function save(){
+
+let data = loadData();
+
+function saveData(){
  localStorage.setItem(KEY,JSON.stringify(data));
 }
+
 function toggle(id){
  document.getElementById(id).classList.toggle("hidden");
 }
-function money(n){
- return Number(n).toLocaleString("ru-RU",{maximumFractionDigits:2})+" ₽";
+
+function money(value){
+ return Number(value || 0).toLocaleString("ru-RU",{
+  maximumFractionDigits:2
+ })+" ₽";
 }
-function safe(s){
- return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function safe(value){
+ return String(value ?? "").replace(/[&<>"']/g,c=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ }[c]));
 }
-function localDate(d=new Date()){
- return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
+
+function localDate(date=new Date()){
+ return [
+  date.getFullYear(),
+  String(date.getMonth()+1).padStart(2,"0"),
+  String(date.getDate()).padStart(2,"0")
+ ].join("-");
+}
+
+function todayMonth(){
+ return localDate().slice(0,7);
+}
+
+function currentMileage(){
+ return Math.max(
+  Number(data.car?.mileage || 0),
+  ...data.maintenance.map(x=>Number(x.mileage || 0)),
+  ...data.fuel.map(x=>Number(x.mileage || 0))
+ );
+}
+
+function allFinancialRecords(){
+ return [
+  ...data.expenses.map(x=>({
+   date:x.date,
+   amount:Number(x.amount)||0,
+   category:x.category || "Другие расходы"
+  })),
+  ...data.maintenance.map(x=>({
+   date:x.date,
+   amount:Number(x.amount)||0,
+   category:"Обслуживание"
+  })),
+  ...data.fuel.map(x=>({
+   date:x.date,
+   amount:Number(x.cost)||0,
+   category:"Топливо"
+  }))
+ ];
 }
 
 function renderCar(){
  const el=document.getElementById("carInfo");
+
  if(!data.car){
   el.textContent="Автомобиль пока не добавлен.";
+  document.getElementById("brand").value="";
+  document.getElementById("model").value="";
+  document.getElementById("year").value="";
+  document.getElementById("engine").value="";
+  document.getElementById("mileage").value="";
   return;
  }
+
  const c=data.car;
- el.innerHTML=`<h2>${safe(c.brand)} ${safe(c.model)}</h2>
- <p>Год выпуска: ${safe(c.year)}</p>
- <p>Двигатель: ${safe(c.engine||"Не указан")}</p>
- <p>Пробег: ${Number(c.mileage).toLocaleString("ru-RU")} км</p>`;
- document.getElementById("brand").value=c.brand;
- document.getElementById("model").value=c.model;
- document.getElementById("year").value=c.year;
- document.getElementById("engine").value=c.engine||"";
- document.getElementById("mileage").value=c.mileage;
+
+ el.innerHTML=`
+  <h2>${safe(c.brand)} ${safe(c.model)}</h2>
+  <p>Год выпуска: ${safe(c.year)}</p>
+  <p>Двигатель: ${safe(c.engine || "Не указан")}</p>
+  <p>Пробег: ${Number(c.mileage).toLocaleString("ru-RU")} км</p>
+ `;
+
+ document.getElementById("brand").value=c.brand || "";
+ document.getElementById("model").value=c.model || "";
+ document.getElementById("year").value=c.year || "";
+ document.getElementById("engine").value=c.engine || "";
+ document.getElementById("mileage").value=c.mileage || "";
 }
+
 document.getElementById("carForm").addEventListener("submit",e=>{
  e.preventDefault();
+
  data.car={
   brand:document.getElementById("brand").value.trim(),
   model:document.getElementById("model").value.trim(),
   year:document.getElementById("year").value,
   engine:document.getElementById("engine").value.trim(),
-  mileage:document.getElementById("mileage").value
+  mileage:Number(document.getElementById("mileage").value)
  };
- save();renderCar();toggle("carForm");
+
+ saveData();
+ renderAll();
+ toggle("carForm");
  alert("Автомобиль сохранён!");
 });
 
+// РАСХОДЫ
 document.getElementById("expenseDate").value=localDate();
 
 document.getElementById("expenseForm").addEventListener("submit",e=>{
  e.preventDefault();
+
  const amount=Number(document.getElementById("amount").value);
  if(!Number.isFinite(amount)||amount<=0){
-  alert("Укажи корректную сумму.");return;
+  alert("Укажи корректную сумму.");
+  return;
  }
-data.expenses.push({
-  id:Date.now().toString()+"-"+Math.random().toString(36).slice(2),
+
+ data.expenses.push({
+  id:String(Date.now())+"-"+Math.random().toString(36).slice(2),
   category:document.getElementById("category").value,
-  amount:amount,
+  amount,
   date:document.getElementById("expenseDate").value,
   description:document.getElementById("description").value.trim()
  });
- save();renderExpenses();e.target.reset();
+
+ saveData();
+ e.target.reset();
  document.getElementById("expenseDate").value=localDate();
  toggle("expenseForm");
- alert("Расход сохранён!");
+ renderAll();
 });
 
 function deleteExpense(id){
  if(!confirm("Удалить эту запись?"))return;
  data.expenses=data.expenses.filter(x=>x.id!==id);
- save();renderExpenses();
+ saveData();
+ renderAll();
 }
 
 function renderExpenses(){
- const now=new Date();
- const month=localDate().slice(0,7);
- const year=String(now.getFullYear());
- const valid=data.expenses.filter(x=>Number.isFinite(Number(x.amount))&&Number(x.amount)>0);
+ const valid=data.expenses.filter(x=>
+  Number.isFinite(Number(x.amount)) && Number(x.amount)>0
+ );
+
  const sum=arr=>arr.reduce((s,x)=>s+Number(x.amount),0);
- const monthly=valid.filter(x=>x.date.startsWith(month));
- const yearly=valid.filter(x=>x.date.startsWith(year));
- document.getElementById("monthTotal").textContent=money(sum(monthly));
- document.getElementById("yearTotal").textContent=money(sum(yearly));
+ const month=valid.filter(x=>String(x.date||"").startsWith(todayMonth()));
+ const year=valid.filter(x=>String(x.date||"").startsWith(String(new Date().getFullYear())));
+
+ document.getElementById("monthTotal").textContent=money(sum(month));
+ document.getElementById("yearTotal").textContent=money(sum(year));
  document.getElementById("allTotal").textContent=money(sum(valid));
  document.getElementById("countTotal").textContent=valid.length;
 
+ const sorted=[...valid].sort((a,b)=>
+  String(b.date||"").localeCompare(String(a.date||""))
+ );
+
  const list=document.getElementById("expenseList");
- const sorted=[...valid].sort((a,b)=>b.date.localeCompare(a.date));
+
  if(!sorted.length){
   list.textContent="Пока расходов нет. Добавь первую запись.";
  }else{
@@ -245,746 +755,376 @@ function renderExpenses(){
      <strong>${money(x.amount)}</strong><br>
      <button class="danger" onclick="deleteExpense('${safe(x.id)}')">Удалить</button>
     </div>
-   </div>`).join("");
- }
-
- const totals={};
- valid.forEach(x=>totals[x.category]=(totals[x.category]||0)+Number(x.amount));
- const analytics=document.getElementById("analytics");
- const categories=Object.entries(totals).sort((a,b)=>b[1]-a[1]);
- if(!categories.length){
-  analytics.textContent="Добавь расходы, чтобы увидеть аналитику.";
- }else{
-  analytics.innerHTML=categories.map(([name,value])=>`
-   <div style="margin:13px 0">
-    <div style="display:flex;justify-content:space-between;gap:10px">
-     <span>${safe(name)}</span><strong>${money(value)}</strong>
-    </div>
-    <div style="height:7px;background:#293442;border-radius:10px;margin-top:7px;overflow:hidden">
-     <div style="height:100%;width:${sum(valid)?value/sum(valid)*100:0}%;background:#258de0"></div>
-    </div>
-   </div>`).join("");
+   </div>
+  `).join("");
  }
 }
 
-renderCar();
-renderExpenses();
+// ОБСЛУЖИВАНИЕ
+document.getElementById("mDate").value=localDate();
+
+document.getElementById("maintenanceForm").addEventListener("submit",e=>{
+ e.preventDefault();
+
+ data.maintenance.unshift({
+  id:String(Date.now()),
+  type:document.getElementById("mType").value.trim(),
+  mileage:Number(document.getElementById("mMileage").value),
+  amount:Number(document.getElementById("mAmount").value),
+  date:document.getElementById("mDate").value,
+  note:document.getElementById("mNote").value.trim()
+ });
+
+ saveData();
+ e.target.reset();
+ document.getElementById("mDate").value=localDate();
+ renderAll();
+});
+
+function deleteMaintenance(id){
+ if(!confirm("Удалить запись обслуживания?"))return;
+ data.maintenance=data.maintenance.filter(x=>x.id!==id);
+ saveData();
+ renderAll();
+}
+
+function renderMaintenance(){
+ const list=document.getElementById("maintenanceList");
+ const total=data.maintenance.reduce((s,x)=>s+Number(x.amount||0),0);
+
+ document.getElementById("maintenanceTotal").textContent=
+  "Всего на обслуживание: "+money(total);
+
+ if(!data.maintenance.length){
+  list.innerHTML='<p class="muted">Записей пока нет.</p>';
+  return;
+ }
+
+ list.innerHTML=data.maintenance.map(x=>`
+  <div class="record">
+   <strong>${safe(x.type)}</strong>
+   <p>Пробег: ${Number(x.mileage||0).toLocaleString("ru-RU")} км</p>
+   <p>Стоимость: ${money(x.amount)}</p>
+   <p>Дата: ${safe(x.date)}</p>
+   ${x.note?`<p>${safe(x.note)}</p>`:""}
+   <button class="danger" onclick="deleteMaintenance('${safe(x.id)}')">Удалить</button>
+  </div>
+ `).join("");
+}
+
+// ТОПЛИВО
+document.getElementById("fuelDate").value=localDate();
+
+document.getElementById("fuelForm").addEventListener("submit",e=>{
+ e.preventDefault();
+
+ const liters=Number(document.getElementById("fuelLiters").value);
+ const price=Number(document.getElementById("fuelPrice").value);
+ const mileage=Number(document.getElementById("fuelMileage").value);
+
+ if(liters<=0||price<=0||mileage<0){
+  alert("Проверь введённые значения.");
+  return;
+ }
+
+ const previous=data.fuel.length
+  ?Math.max(...data.fuel.map(x=>Number(x.mileage||0)))
+  :0;
+
+ if(mileage<previous){
+  alert("Пробег не может быть меньше предыдущей заправки.");
+  return;
+ }
+
+ data.fuel.unshift({
+  id:String(Date.now()),
+  date:document.getElementById("fuelDate").value,
+  mileage,
+  liters,
+  price,
+  cost:liters*price
+ });
+
+ saveData();
+ e.target.reset();
+ document.getElementById("fuelDate").value=localDate();
+ renderAll();
+});
+
+function deleteFuel(id){
+ if(!confirm("Удалить эту заправку?"))return;
+ data.fuel=data.fuel.filter(x=>x.id!==id);
+ saveData();
+ renderAll();
+}
+
+function renderFuel(){
+ const total=data.fuel.reduce((s,x)=>s+Number(x.cost||0),0);
+ const liters=data.fuel.reduce((s,x)=>s+Number(x.liters||0),0);
+ const average=liters?total/liters:0;
+
+ document.getElementById("fuelTotal").textContent=money(total);
+ document.getElementById("fuelLitersTotal").textContent=
+  liters.toLocaleString("ru-RU",{maximumFractionDigits:2})+" л";
+ document.getElementById("fuelAveragePrice").textContent=money(average);
+
+ const sorted=[...data.fuel].sort((a,b)=>
+  Number(a.mileage)-Number(b.mileage)
+ );
+
+ let consumption="Недостаточно данных";
+
+ if(sorted.length>=2){
+  const distance=Number(sorted[sorted.length-1].mileage)-Number(sorted[0].mileage);
+
+  if(distance>0){
+   const usedLiters=sorted.slice(1).reduce((s,x)=>s+Number(x.liters||0),0);
+   consumption=(usedLiters/distance*100).toFixed(1)+" л/100 км (оценка)";
+  }
+ }
+
+ document.getElementById("fuelConsumption").textContent=consumption;
+
+ const list=document.getElementById("fuelList");
+
+ if(!data.fuel.length){
+  list.innerHTML='<p class="muted">Заправок пока нет.</p>';
+  return;
+ }
+
+ list.innerHTML=data.fuel.map(x=>`
+  <div class="record">
+   <strong>${safe(x.date)}</strong>
+   <p>Пробег: ${Number(x.mileage).toLocaleString("ru-RU")} км</p>
+   <p>Топливо: ${Number(x.liters)} л</p>
+   <p>Цена за литр: ${money(x.price)}</p>
+   <p>Итого: ${money(x.cost)}</p>
+   <button class="danger" onclick="deleteFuel('${safe(x.id)}')">Удалить</button>
+  </div>
+ `).join("");
+}
+
+// НАПОМИНАНИЯ
+document.getElementById("reminderForm").addEventListener("submit",e=>{
+ e.preventDefault();
+
+ const title=document.getElementById("rTitle").value.trim();
+ const date=document.getElementById("rDate").value;
+ const mileage=document.getElementById("rMileage").value;
+
+ if(!date&&!mileage){
+  alert("Укажи дату или пробег для напоминания.");
+  return;
+ }
+
+ data.reminders.unshift({
+  id:String(Date.now()),
+  title,
+  date,
+  mileage:mileage?Number(mileage):null
+ });
+
+ saveData();
+ e.target.reset();
+ renderAll();
+});
+
+function deleteReminder(id){
+ if(!confirm("Удалить напоминание?"))return;
+ data.reminders=data.reminders.filter(x=>x.id!==id);
+ saveData();
+ renderAll();
+}
+
+function reminderStatus(item){
+ const today=new Date();
+ today.setHours(0,0,0,0);
+
+ let status="Всё в порядке";
+ let color="#48cf94";
+
+ if(item.date){
+  const date=new Date(item.date+"T00:00:00");
+
+  if(date<today){
+   status="Просрочено по дате";
+   color="#ff6464";
+  }else if(date.getTime()===today.getTime()){
+   status="Сегодня";
+   color="#e5a52b";
+  }
+ }
+
+ if(item.mileage){
+  const remaining=Number(item.mileage)-currentMileage();
+
+  if(remaining<=0){
+   status="Пора обслужить автомобиль";
+   color="#ff6464";
+  }else if(remaining<=500){
+   status="Скоро: осталось "+remaining+" км";
+   color="#e5a52b";
+  }
+ }
+
+ return {status,color};
+}
+
+function renderReminders(){
+ const list=document.getElementById("reminderList");
+
+ if(!data.reminders.length){
+  list.innerHTML='<p class="muted">Напоминаний пока нет.</p>';
+  return;
+ }
+
+ list.innerHTML=data.reminders.map(x=>{
+  const s=reminderStatus(x);
+
+  return `
+   <div class="record">
+    <strong>${safe(x.title)}</strong>
+    <p>Дата: ${x.date?safe(x.date):"Не указана"}</p>
+    <p>Пробег: ${x.mileage?Number(x.mileage).toLocaleString("ru-RU")+" км":"Не указан"}</p>
+    <p style="color:${s.color};font-weight:bold">${s.status}</p>
+    <button class="danger" onclick="deleteReminder('${safe(x.id)}')">Удалить</button>
+   </div>
+  `;
+ }).join("");
+}
+
+// АНАЛИТИКА
+function renderAnalytics(){
+ const entries=allFinancialRecords();
+ const now=new Date();
+ const month=todayMonth();
+ const year=String(now.getFullYear());
+
+ const total=entries.reduce((s,x)=>s+x.amount,0);
+ const monthly=entries.filter(x=>String(x.date||"").startsWith(month))
+  .reduce((s,x)=>s+x.amount,0);
+ const yearly=entries.filter(x=>String(x.date||"").startsWith(year))
+  .reduce((s,x)=>s+x.amount,0);
+
+ const dates=entries.map(x=>x.date).filter(Boolean).sort();
+ let average=0;
+
+ if(dates.length){
+  const first=new Date(dates[0]+"T00:00:00");
+  const months=Math.max(1,
+   (now.getFullYear()-first.getFullYear())*12+
+   now.getMonth()-first.getMonth()+1
+  );
+  average=total/months;
+ }
+
+ document.getElementById("aMonth").textContent=money(monthly);
+ document.getElementById("aYear").textContent=money(yearly);
+ document.getElementById("aAll").textContent=money(total);
+ document.getElementById("aAverage").textContent=money(average);
+
+ const categories={};
+
+ entries.forEach(x=>{
+  categories[x.category]=(categories[x.category]||0)+x.amount;
+ });
+
+ const sorted=Object.entries(categories).sort((a,b)=>b[1]-a[1]);
+ const max=sorted.length?sorted[0][1]:1;
+
+ document.getElementById("aCategories").innerHTML=sorted.length
+  ?sorted.map(([name,value])=>`
+   <div style="margin:13px 0">
+    <div style="display:flex;justify-content:space-between;gap:10px">
+     <span>${safe(name)}</span>
+     <strong>${money(value)}</strong>
+    </div>
+    <div class="bar"><div style="width:${value/max*100}%"></div></div>
+   </div>
+  `).join("")
+  :'<p class="muted">Пока нет расходов для анализа.</p>';
+
+ document.getElementById("aBars").innerHTML=sorted.length
+  ?sorted.map(([name,value])=>`
+   <p style="margin:9px 0">${safe(name)} — ${total?(value/total*100).toFixed(1):0}%</p>
+  `).join("")
+  :'<p class="muted">Добавь первые расходы.</p>';
+}
+
+// ГЛАВНАЯ ПАНЕЛЬ
+function renderDashboard(){
+ const car=data.car||{};
+ const carName=[car.brand,car.model].filter(Boolean).join(" ");
+
+ document.getElementById("dashCar").textContent=
+  carName||"Добавь автомобиль";
+
+ document.getElementById("dashDetails").textContent=
+  [car.year,car.engine].filter(Boolean).join(" · ")||
+  "Заполни данные автомобиля";
+
+ const mileage=currentMileage();
+
+ document.getElementById("dashMileage").textContent=
+  mileage?mileage.toLocaleString("ru-RU")+" км":"Не указан";
+
+ const entries=allFinancialRecords();
+ const total=entries.reduce((s,x)=>s+x.amount,0);
+ const monthly=entries.filter(x=>
+  String(x.date||"").startsWith(todayMonth())
+ ).reduce((s,x)=>s+x.amount,0);
+
+ document.getElementById("dashMonth").textContent=money(monthly);
+ document.getElementById("dashTotal").textContent=money(total);
+
+ const upcoming=data.reminders
+  .filter(x=>{
+   if(!x.date&&!x.mileage)return false;
+   const s=reminderStatus(x);
+   return s.status!=="Всё в порядке";
+  })
+  .slice(0,4);
+
+ const box=document.getElementById("dashReminders");
+
+ if(!upcoming.length){
+  box.textContent=data.reminders.length
+   ?"Нет срочных напоминаний."
+   :"Пока напоминаний нет.";
+ }else{
+  box.innerHTML=upcoming.map(x=>{
+   const s=reminderStatus(x);
+   return `
+    <div style="padding:9px 0;border-bottom:1px solid #394454">
+     <strong>${safe(x.title)}</strong>
+     <p style="font-size:13px;color:${s.color};margin-top:5px">${s.status}</p>
+    </div>
+   `;
+  }).join("");
+ }
+}
+
+// ОБНОВЛЕНИЕ ВСЕГО САЙТА
+function renderAll(){
+ renderCar();
+ renderExpenses();
+ renderMaintenance();
+ renderFuel();
+ renderReminders();
+ renderAnalytics();
+ renderDashboard();
+}
+
+renderAll();
+
+// Обновление данных, если сайт открыт в другой вкладке
+window.addEventListener("storage",e=>{
+ if(e.key===KEY){
+  data=loadData();
+  renderAll();
+ }
+});
 </script>
- <section class="card" id="maintenance-section">
-  <h2>🔧 Обслуживание автомобиля</h2>
-  <p>История ТО и ремонтов</p>
 
-  <form id="maintenanceForm">
-    <input id="mType" placeholder="Что делали? Например: Замена масла" required>
-    <input id="mMileage" type="number" placeholder="Пробег, км" required>
-    <input id="mAmount" type="number" placeholder="Стоимость, ₽" required>
-    <input id="mDate" type="date" required>
-    <textarea id="mNote" placeholder="Комментарий (необязательно)"></textarea>
-    <button type="submit">Добавить обслуживание</button>
-  </form>
-
-  <h3>История обслуживания</h3>
-  <div id="maintenanceList"></div>
-  <h3 id="maintenanceTotal">Всего на обслуживание: 0 ₽</h3>
-</section>
-
-<script>
-(function () {
-  const KEY = "autoLifeDataV2";
-
-  function getData() {
-    try {
-      return JSON.parse(localStorage.getItem(KEY)) || {};
-    } catch {
-      return {};
-    }
-  }
-
-  function saveData(data) {
-    localStorage.setItem(KEY, JSON.stringify(data));
-  }
-
-  function renderMaintenance() {
-    const data = getData();
-    const records = Array.isArray(data.maintenance)
-      ? data.maintenance : [];
-
-    const list = document.getElementById("maintenanceList");
-    const total = records.reduce(
-      (sum, item) => sum + Number(item.amount || 0), 0
-    );
-
-    document.getElementById("maintenanceTotal").textContent =
-      "Всего на обслуживание: " +
-      total.toLocaleString("ru-RU") + " ₽";
-
-    if (!records.length) {
-      list.innerHTML = "<p>Записей пока нет</p>";
-      return;
-    }
-
-    list.innerHTML = records.map(item => `
-      <div style="padding:12px;margin:10px 0;border:1px solid #444;border-radius:10px">
-        <strong>${escapeHTML(item.type)}</strong>
-        <p>Пробег: ${Number(item.mileage).toLocaleString("ru-RU")} км</p>
-        <p>Стоимость: ${Number(item.amount).toLocaleString("ru-RU")} ₽</p>
-        <p>Дата: ${escapeHTML(item.date)}</p>
-        <p>${escapeHTML(item.note || "")}</p>
-        <button type="button" onclick="deleteMaintenance('${item.id}')">
-          Удалить
-        </button>
-      </div>
-    `).join("");
-  }
-
-  function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, char => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;",
-      '"': "&quot;", "'": "&#39;"
-    }[char]));
-  }
-
-  document.getElementById("maintenanceForm")
-    .addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      const data = getData();
-      if (!Array.isArray(data.maintenance)) data.maintenance = [];
-
-      data.maintenance.unshift({
-        id: String(Date.now()),
-        type: document.getElementById("mType").value.trim(),
-        mileage: document.getElementById("mMileage").value,
-        amount: document.getElementById("mAmount").value,
-        date: document.getElementById("mDate").value,
-        note: document.getElementById("mNote").value.trim()
-      });
-
-      saveData(data);
-      this.reset();
-      renderMaintenance();
-    });
-
-  window.deleteMaintenance = function(id) {
-    const data = getData();
-    data.maintenance = (data.maintenance || [])
-      .filter(item => item.id !== id);
-    saveData(data);
-    renderMaintenance();
-  };
-
-  renderMaintenance();
-})();
-</script>
- <section class="card" id="fuel-section">
-  <h2>⛽ Учёт топлива</h2>
-  <p>Заправки и расход бензина</p>
-
-  <form id="fuelForm">
-    <input id="fuelDate" type="date" required>
-    <input id="fuelMileage" type="number" min="1" placeholder="Пробег, км" required>
-    <input id="fuelLiters" type="number" min="0.01" step="0.01" placeholder="Литры" required>
-    <input id="fuelPrice" type="number" min="0.01" step="0.01" placeholder="Цена за литр, ₽" required>
-    <button type="submit">Добавить заправку</button>
-  </form>
-
-  <div style="margin-top:20px;padding:15px;border:1px solid #444;border-radius:12px">
-    <p>Всего потрачено на топливо:</p>
-    <h2 id="fuelTotal">0 ₽</h2>
-    <p>Заправлено литров: <strong id="fuelLitersTotal">0</strong></p>
-    <p>Средняя стоимость литра: <strong id="fuelAveragePrice">0 ₽</strong></p>
-    <p>Средний расход: <strong id="fuelConsumption">Недостаточно данных</strong></p>
-  </div>
-
-  <h3>История заправок</h3>
-  <div id="fuelList"></div>
-</section>
-
-<script>
-(function () {
-  const KEY = "autoLifeDataV2";
-
-  function getData() {
-    try {
-      return JSON.parse(localStorage.getItem(KEY)) || {};
-    } catch {
-      return {};
-    }
-  }
-
-  function saveData(data) {
-    localStorage.setItem(KEY, JSON.stringify(data));
-  }
-
-  function safe(value) {
-    return String(value).replace(/[&<>"']/g, c => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;",
-      '"': "&quot;", "'": "&#39;"
-    }[c]));
-  }
-
-  function renderFuel() {
-    const data = getData();
-    const records = Array.isArray(data.fuel) ? data.fuel : [];
-
-    const total = records.reduce((s, x) => s + Number(x.cost || 0), 0);
-    const liters = records.reduce((s, x) => s + Number(x.liters || 0), 0);
-    const average = liters ? total / liters : 0;
-
-    document.getElementById("fuelTotal").textContent =
-      total.toLocaleString("ru-RU", {maximumFractionDigits: 2}) + " ₽";
-
-    document.getElementById("fuelLitersTotal").textContent =
-      liters.toLocaleString("ru-RU", {maximumFractionDigits: 2}) + " л";
-
-    document.getElementById("fuelAveragePrice").textContent =
-      average.toLocaleString("ru-RU", {maximumFractionDigits: 2}) + " ₽";
-
-    const sorted = [...records].sort(
-      (a, b) => Number(a.mileage) - Number(b.mileage)
-    );
-
-    let consumption = "Недостаточно данных";
-
-    if (sorted.length >= 2) {
-      const first = sorted[0];
-      const last = sorted[sorted.length - 1];
-      const distance = Number(last.mileage) - Number(first.mileage);
-
-      // Для точного расхода нужны две последовательные заправки
-      // с полным баком. Пока показываем ориентировочную оценку.
-      if (distance > 0) {
-        const usedLiters = sorted.slice(1).reduce(
-          (s, x) => s + Number(x.liters || 0), 0
-        );
-        consumption =
-          (usedLiters / distance * 100).toFixed(1) + " л/100 км (оценка)";
-      }
-    }
-
-    document.getElementById("fuelConsumption").textContent = consumption;
-
-    const list = document.getElementById("fuelList");
-
-    if (!records.length) {
-      list.innerHTML = "<p>Заправок пока нет</p>";
-      return;
-    }
-
-    list.innerHTML = [...records].map(x => `
-      <div style="padding:12px;margin:10px 0;border:1px solid #444;border-radius:10px">
-        <strong>${safe(x.date)}</strong>
-        <p>Пробег: ${Number(x.mileage).toLocaleString("ru-RU")} км</p>
-        <p>Топливо: ${Number(x.liters)} л</p>
-        <p>Цена за литр: ${Number(x.price).toLocaleString("ru-RU")} ₽</p>
-        <p>Итого: ${Number(x.cost).toLocaleString("ru-RU")} ₽</p>
-        <button type="button" onclick="deleteFuel('${safe(x.id)}')">Удалить</button>
-      </div>
-    `).join("");
-  }
-
-  document.getElementById("fuelForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const data = getData();
-    if (!Array.isArray(data.fuel)) data.fuel = [];
-
-    const liters = Number(document.getElementById("fuelLiters").value);
-    const price = Number(document.getElementById("fuelPrice").value);
-   const mileage = Number(document.getElementById("fuelMileage").value);
-
-    const previous = data.fuel.length
-      ? Math.max(...data.fuel.map(x => Number(x.mileage)))
-      : 0;
-
-    if (mileage < previous) {
-      alert("Пробег не может быть меньше предыдущей заправки.");
-      return;
-    }
-
-    data.fuel.unshift({
-      id: String(Date.now()),
-      date: document.getElementById("fuelDate").value,
-      mileage,
-      liters,
-      price,
-      cost: liters * price
-    });
-
-    saveData(data);
-    this.reset();
-    renderFuel();
-  });
-
-  window.deleteFuel = function(id) {
-    const data = getData();
-    data.fuel = (data.fuel || []).filter(x => x.id !== id);
-    saveData(data);
-    renderFuel();
-  };
-
-  renderFuel();
-})();
-</script
- <section class="card" id="reminders-section">
-  <h2>🔔 Напоминания</h2>
-  <p>Следи за обслуживанием автомобиля</p>
-
-  <form id="reminderForm">
-    <input id="rTitle" placeholder="Например: Замена масла" required>
-
-    <label for="rDate">Дата напоминания</label>
-    <input id="rDate" type="date">
-
-    <label for="rMileage">Пробег для напоминания, км</label>
-    <input id="rMileage" type="number" min="1" placeholder="Например: 310000">
-
-    <button type="submit">Добавить напоминание</button>
-  </form>
-
-  <h3>Мои напоминания</h3>
-  <div id="reminderList"></div>
-</section>
-
-<script>
-(function () {
-  const KEY = "autoLifeDataV2";
-
-  function getData() {
-    try {
-      return JSON.parse(localStorage.getItem(KEY)) || {};
-    } catch {
-      return {};
-    }
-  }
-
-  function saveData(data) {
-    localStorage.setItem(KEY, JSON.stringify(data));
-  }
-
-  function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, c => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;",
-      '"': "&quot;", "'": "&#39;"
-    }[c]));
-  }
-
-  function getCurrentMileage(data) {
-    const carMileage = Number(data.car?.mileage || 0);
-    const serviceMileage = (data.maintenance || [])
-      .reduce((max, x) => Math.max(max, Number(x.mileage || 0)), 0);
-    const fuelMileage = (data.fuel || [])
-      .reduce((max, x) => Math.max(max, Number(x.mileage || 0)), 0);
-
-    return Math.max(carMileage, serviceMileage, fuelMileage);
-  }
-
-  function renderReminders() {
-    const data = getData();
-    const reminders = Array.isArray(data.reminders)
-      ? data.reminders : [];
-
-    const currentMileage = getCurrentMileage(data);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const list = document.getElementById("reminderList");
-
-    if (!reminders.length) {
-      list.innerHTML = "<p>Напоминаний пока нет</p>";
-      return;
-    }
-
-    list.innerHTML = reminders.map(item => {
-      let status = "Всё в порядке";
-      let color = "#4caf50";
-
-      if (item.date) {
-        const date = new Date(item.date + "T00:00:00");
-        if (date < today) {
-          status = "Просрочено по дате";
-          color = "#ff5555";
-        } else if (date.getTime() === today.getTime()) {
-          status = "Сегодня";
-          color = "#e5a52b";
-        }
-      }
-
-      if (item.mileage) {
-        const remaining = Number(item.mileage) - currentMileage;
-
-        if (remaining <= 0) {
-          status = "Пора обслужить автомобиль";
-          color = "#ff5555";
-        } else if (remaining <= 500 && status === "Всё в порядке") {
-          status = "Скоро: осталось " + remaining + " км";
-          color = "#e5a52b";
-        }
-      }
-
-      return `
-        <div style="padding:12px;margin:10px 0;border:1px solid #444;border-radius:10px">
-          <strong>${escapeHTML(item.title)}</strong>
-          <p>Дата: ${item.date ? escapeHTML(item.date) : "Не указана"}</p>
-          <p>Пробег: ${item.mileage ? Number(item.mileage).toLocaleString("ru-RU") + " км" : "Не указан"}</p>
-          <p style="color:${color};font-weight:bold">${status}</p>
-          <button type="button" onclick="deleteReminder('${escapeHTML(item.id)}')">Удалить</button>
-        </div>
-      `;
-    }).join("");
-  }
-
-  document.getElementById("reminderForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const title = document.getElementById("rTitle").value.trim();
-    const date = document.getElementById("rDate").value;
-    const mileage = document.getElementById("rMileage").value;
-
-    if (!date && !mileage) {
-      alert("Укажи дату или пробег для напоминания.");
-      return;
-    }
-
-    const data = getData();
-    if (!Array.isArray(data.reminders)) data.reminders = [];
-
-    data.reminders.unshift({
-      id: String(Date.now()),
-      title,
-      date,
-      mileage
-    });
-
-    saveData(data);
-    this.reset();
-    renderReminders();
-  });
-
-  window.deleteReminder = function(id) {
-    const data = getData();
-    data.reminders = (data.reminders || [])
-     .filter(item => item.id !== id);
-    saveData(data);
-    renderReminders();
-  };
-
-  renderReminders();
-})();
-</script>
- <section class="card" id="analytics-section">
-  <h2>📊 AUTO LIFE ANALYTICS</h2>
-  <p>Полная финансовая картина твоего автомобиля</p>
-
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
-    <div style="padding:14px;border:1px solid #444;border-radius:12px">
-      <small>За этот месяц</small>
-      <h2 id="aMonth">0 ₽</h2>
-    </div>
-    <div style="padding:14px;border:1px solid #444;border-radius:12px">
-      <small>За этот год</small>
-      <h2 id="aYear">0 ₽</h2>
-    </div>
-    <div style="padding:14px;border:1px solid #444;border-radius:12px">
-      <small>Всего расходов</small>
-      <h2 id="aAll">0 ₽</h2>
-    </div>
-    <div style="padding:14px;border:1px solid #444;border-radius:12px">
-      <small>Среднее за месяц</small>
-      <h2 id="aAverage">0 ₽</h2>
-    </div>
-  </div>
-
-  <h3>Расходы по категориям</h3>
-  <div id="aCategories"></div>
-
-  <h3>Структура затрат</h3>
-  <div id="aBars"></div>
-
-  <p style="color:#999;font-size:12px">
-    Учитываются записи расходов, обслуживания и заправок.
-    Не добавляй одну и ту же покупку одновременно в разные разделы,
-    иначе она посчитается дважды.
-  </p>
-</section>
-
-<script>
-(function () {
-  const KEY = "autoLifeDataV2";
-  const money = n => Math.round(n).toLocaleString("ru-RU") + " ₽";
-
-  function getData() {
-    try {
-      return JSON.parse(localStorage.getItem(KEY)) || {};
-    } catch {
-      return {};
-    }
-  }
-
-  function renderAnalytics() {
-    const data = getData();
-    const expenses = Array.isArray(data.expenses) ? data.expenses : [];
-    const maintenance = Array.isArray(data.maintenance) ? data.maintenance : [];
-    const fuel = Array.isArray(data.fuel) ? data.fuel : [];
-
-    const entries = [];
-
-    expenses.forEach(x => entries.push({
-      date: x.date,
-      category: x.category || "Другие расходы",
-      amount: Number(x.amount) || 0
-    }));
-
-    maintenance.forEach(x => entries.push({
-      date: x.date,
-      category: "Обслуживание",
-      amount: Number(x.amount) || 0
-    }));
-
-    fuel.forEach(x => entries.push({
-      date: x.date,
-      category: "Топливо",
-      amount: Number(x.cost) || 0
-    }));
-
-    const now = new Date();
-    const month = now.getFullYear() + "-" +
-      String(now.getMonth() + 1).padStart(2, "0");
-    const year = String(now.getFullYear());
-
-    const all = entries.reduce((s, x) => s + x.amount, 0);
-    const monthTotal = entries
-      .filter(x => String(x.date || "").startsWith(month))
-      .reduce((s, x) => s + x.amount, 0);
-    const yearTotal = entries
-      .filter(x => String(x.date || "").startsWith(year))
-      .reduce((s, x) => s + x.amount, 0);
-
-    const dates = entries.map(x => x.date).filter(Boolean).sort();
-    let average = 0;
-
-    if (dates.length) {
-      const first = new Date(dates[0] + "T00:00:00");
-      const months = Math.max(1,
-        (now.getFullYear() - first.getFullYear()) * 12 +
-        now.getMonth() - first.getMonth() + 1
-      );
-      average = all / months;
-    }
-
-    document.getElementById("aMonth").textContent = money(monthTotal);
-    document.getElementById("aYear").textContent = money(yearTotal);
-    document.getElementById("aAll").textContent = money(all);
-    document.getElementById("aAverage").textContent = money(average);
-
-    const categories = {};
-    entries.forEach(x => {
-      categories[x.category] = (categories[x.category] || 0) + x.amount;
-    });
-
-    const sorted = Object.entries(categories).sort((a, b) => b[1] - a[1]);
-    const max = sorted.length ? sorted[0][1] : 1;
-
-    document.getElementById("aCategories").innerHTML =
-      sorted.length ? sorted.map(([name, amount]) => `
-        <div style="margin:12px 0">
-          <div style="display:flex;justify-content:space-between;gap:8px">
-            <strong>${escapeHTML(name)}</strong>
-            <strong>${money(amount)}</strong>
-          </div>
-          <div style="height:9px;background:#333;border-radius:10px;overflow:hidden;margin-top:6px">
-          <div style="height:100%;width:${amount / max * 100}%;background:#4c9aff;border-radius:10px"></div>
-          </div>
-        </div>
-      `).join("") : "<p>Пока нет расходов для анализа</p>";
-
-    const total = all || 1;
-    document.getElementById("aBars").innerHTML =
-      sorted.length ? sorted.map(([name, amount]) => `
-        <p>${escapeHTML(name)} — ${(amount / total * 100).toFixed(1)}%</p>
-      `).join("") : "<p>Добавь первые расходы</p>";
-  }
-
-  function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, c => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;",
-      '"': "&quot;", "'": "&#39;"
-    }[c]));
-  }
-
-  renderAnalytics();
-})();
-</script>
- <section id="dashboard" style="padding:20px;margin:15px auto;max-width:900px;background:#151922;color:white;border:1px solid #303846;border-radius:18px;font-family:Arial,sans-serif">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-    <div>
-      <div style="color:#8e9aaa;font-size:12px;letter-spacing:2px">AUTO LIFE</div>
-      <h1 style="margin:8px 0">Твой автомобиль</h1>
-      <p style="color:#9ba8b8;margin:0">Твой автомобиль под контролем</p>
-    </div>
-    <div style="font-size:38px">🚘</div>
-  </div>
-
-  <div style="margin-top:22px;padding:18px;background:#202936;border-radius:14px">
-    <div style="color:#9ba8b8;font-size:12px">МОЙ АВТОМОБИЛЬ</div>
-    <h2 id="dashCar" style="margin:8px 0">Добавь автомобиль</h2>
-    <p id="dashDetails" style="color:#aeb9c8">Информация появится после добавления автомобиля</p>
-    <div style="font-size:13px;color:#9ba8b8">Текущий пробег</div>
-    <div id="dashMileage" style="font-size:27px;font-weight:bold;margin-top:5px">—</div>
-  </div>
-
-  <h3 style="margin-top:24px">Финансы</h3>
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
-    <div style="background:#202936;padding:15px;border-radius:12px">
-      <div style="color:#9ba8b8;font-size:12px">За месяц</div>
-      <div id="dashMonth" style="font-size:21px;font-weight:bold;margin-top:8px">0 ₽</div>
-    </div>
-    <div style="background:#202936;padding:15px;border-radius:12px">
-      <div style="color:#9ba8b8;font-size:12px">Всего потрачено</div>
-      <div id="dashTotal" style="font-size:21px;font-weight:bold;margin-top:8px">0 ₽</div>
-    </div>
-  </div>
-
-  <h3 style="margin-top:24px">Ближайшие напоминания</h3>
-  <div id="dashReminders" style="background:#202936;padding:15px;border-radius:12px">
-    Пока напоминаний нет
-  </div>
-
-  <h3 style="margin-top:24px">Быстрый доступ</h3>
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
-    <a href="#maintenance-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">🔧 Обслуживание</a>
-    <a href="#fuel-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">⛽ Заправки</a>
-    <a href="#analytics-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">📊 Аналитика</a>
-    <a href="#reminders-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">🔔 Напоминания</a>
-  </div>
-</section>
-
-<script>
-(function() {
-  const KEY = "autoLifeDataV2";
-
-  function money(value) {
-    return Math.round(value).toLocaleString("ru-RU") + " ₽";
-  }
-
-  function safe(value) {
-    return String(value).replace(/[&<>"']/g, c => ({
-      "&":"&amp;", "<":"&lt;", ">":"&gt;",
-      '"':"&quot;", "'":"&#39;"
-    }[c]));
-  }
-
-  function renderDashboard() {
-    let data = {};
-    try {
-      data = JSON.parse(localStorage.getItem(KEY)) || {};
-    } catch(e) {}
-
-    const car = data.car || {};
-    const expenses = Array.isArray(data.expenses) ? data.expenses : [];
-    const maintenance = Array.isArray(data.maintenance) ? data.maintenance : [];
-    const fuel = Array.isArray(data.fuel) ? data.fuel : [];
-    const reminders = Array.isArray(data.reminders) ? data.reminders : [];
-
-    const carName = [car.brand, car.model].filter(Boolean).join(" ");
-
-    document.getElementById("dashCar").textContent =
-      carName || "Добавь автомобиль";
-
-    document.getElementById("dashDetails").textContent =
-      [car.year, car.engine].filter(Boolean).join(" · ") ||
-      "Заполни данные автомобиля";
-
-    const mileage = Math.max(
-      Number(car.mileage || 0),
-      ...maintenance.map(x => Number(x.mileage || 0)),
-      ...fuel.map(x => Number(x.mileage || 0))
-    );
-
-    document.getElementById("dashMileage").textContent =
-      mileage ? mileage.toLocaleString("ru-RU") + " км" : "Не указан";
-
-    const records = [
-     ...expenses.map(x => ({date:x.date, amount:Number(x.amount)||0})),
-      ...maintenance.map(x => ({date:x.date, amount:Number(x.amount)||0})),
-      ...fuel.map(x => ({date:x.date, amount:Number(x.cost)||0}))
-    ];
-
-    const now = new Date();
-    const month = now.getFullYear() + "-" +
-      String(now.getMonth()+1).padStart(2,"0");
-
-    const total = records.reduce((s,x) => s+x.amount,0);
-    const monthTotal = records
-      .filter(x => String(x.date||"").startsWith(month))
-      .reduce((s,x) => s+x.amount,0);
-
-    document.getElementById("dashMonth").textContent = money(monthTotal);
-    document.getElementById("dashTotal").textContent = money(total);
-
-    const upcoming = reminders
-      .filter(x => x.date || x.mileage)
-      .slice(0,4);
-
-    document.getElementById("dashReminders").innerHTML =
-      upcoming.length
-        ? upcoming.map(x => `
-          <div style="padding:8px 0;border-bottom:1px solid #394454">
-            <strong>${safe(x.title)}</strong>
-            <div style="color:#aeb9c8;font-size:13px;margin-top:4px">
-              ${x.date ? "📅 "+safe(x.date) : ""}
-              ${x.mileage ? " · 🛣 "+Number(x.mileage).toLocaleString("ru-RU")+" км" : ""}
-            </div>
-          </div>
-        `).join("")
-        : "Пока напоминаний нет";
-  }
-
-  renderDashboard();
-})();
-</script>
-</body
-  <section id="dashboard" style="padding:20px;margin:15px auto;max-width:900px;background:#151922;color:white;border:1px solid #303846;border-radius:18px;font-family:Arial,sans-serif">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-    <div>
-      <div style="color:#8e9aaa;font-size:12px;letter-spacing:2px">AUTO LIFE</div>
-      <h1 style="margin:8px 0">Твой автомобиль</h1>
-      <p style="color:#9ba8b8;margin:0">Твой автомобиль под контролем</p>
-    </div>
-    <div style="font-size:38px">🚘</div>
-  </div>
-
-  <div style="margin-top:22px;padding:18px;background:#202936;border-radius:14px">
-    <div style="color:#9ba8b8;font-size:12px">МОЙ АВТОМОБИЛЬ</div>
-    <h2 id="dashCar" style="margin:8px 0">Добавь автомобиль</h2>
-    <p id="dashDetails" style="color:#aeb9c8">Информация появится после добавления автомобиля</p>
-    <div style="font-size:13px;color:#9ba8b8">Текущий пробег</div>
-    <div id="dashMileage" style="font-size:27px;font-weight:bold;margin-top:5px">—</div>
-  </div>
-
-  <h3 style="margin-top:24px">Финансы</h3>
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
-    <div style="background:#202936;padding:15px;border-radius:12px">
-      <div style="color:#9ba8b8;font-size:12px">За месяц</div>
-      <div id="dashMonth" style="font-size:21px;font-weight:bold;margin-top:8px">0 ₽</div>
-    </div>
-    <div style="background:#202936;padding:15px;border-radius:12px">
-      <div style="color:#9ba8b8;font-size:12px">Всего потрачено</div>
-      <div id="dashTotal" style="font-size:21px;font-weight:bold;margin-top:8px">0 ₽</div>
-    </div>
-  </div>
-
-  <h3 style="margin-top:24px">Ближайшие напоминания</h3>
-  <div id="dashReminders" style="background:#202936;padding:15px;border-radius:12px">
-    Пока напоминаний нет
-  </div>
-
-  <h3 style="margin-top:24px">Быстрый доступ</h3>
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
-    <a href="#maintenance-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">🔧 Обслуживание</a>
-    <a href="#fuel-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">⛽ Заправки</a>
-    <a href="#analytics-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">📊 Аналитика</a>
-    <a href="#reminders-section" style="padding:15px;background:#202936;border-radius:12px;color:white;text-decoration:none">🔔 Напоминания</a>
-  </div>
-</section>
+</body>
 </html>

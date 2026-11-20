@@ -525,6 +525,152 @@ renderExpenses();
 
   renderFuel();
 })();
+</script
+ <section class="card" id="reminders-section">
+  <h2>🔔 Напоминания</h2>
+  <p>Следи за обслуживанием автомобиля</p>
+
+  <form id="reminderForm">
+    <input id="rTitle" placeholder="Например: Замена масла" required>
+
+    <label for="rDate">Дата напоминания</label>
+    <input id="rDate" type="date">
+
+    <label for="rMileage">Пробег для напоминания, км</label>
+    <input id="rMileage" type="number" min="1" placeholder="Например: 310000">
+
+    <button type="submit">Добавить напоминание</button>
+  </form>
+
+  <h3>Мои напоминания</h3>
+  <div id="reminderList"></div>
+</section>
+
+<script>
+(function () {
+  const KEY = "autoLifeDataV2";
+
+  function getData() {
+    try {
+      return JSON.parse(localStorage.getItem(KEY)) || {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveData(data) {
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  function getCurrentMileage(data) {
+    const carMileage = Number(data.car?.mileage || 0);
+    const serviceMileage = (data.maintenance || [])
+      .reduce((max, x) => Math.max(max, Number(x.mileage || 0)), 0);
+    const fuelMileage = (data.fuel || [])
+      .reduce((max, x) => Math.max(max, Number(x.mileage || 0)), 0);
+
+    return Math.max(carMileage, serviceMileage, fuelMileage);
+  }
+
+  function renderReminders() {
+    const data = getData();
+    const reminders = Array.isArray(data.reminders)
+      ? data.reminders : [];
+
+    const currentMileage = getCurrentMileage(data);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const list = document.getElementById("reminderList");
+
+    if (!reminders.length) {
+      list.innerHTML = "<p>Напоминаний пока нет</p>";
+      return;
+    }
+
+    list.innerHTML = reminders.map(item => {
+      let status = "Всё в порядке";
+      let color = "#4caf50";
+
+      if (item.date) {
+        const date = new Date(item.date + "T00:00:00");
+        if (date < today) {
+          status = "Просрочено по дате";
+          color = "#ff5555";
+        } else if (date.getTime() === today.getTime()) {
+          status = "Сегодня";
+          color = "#e5a52b";
+        }
+      }
+
+      if (item.mileage) {
+        const remaining = Number(item.mileage) - currentMileage;
+
+        if (remaining <= 0) {
+          status = "Пора обслужить автомобиль";
+          color = "#ff5555";
+        } else if (remaining <= 500 && status === "Всё в порядке") {
+          status = "Скоро: осталось " + remaining + " км";
+          color = "#e5a52b";
+        }
+      }
+
+      return `
+        <div style="padding:12px;margin:10px 0;border:1px solid #444;border-radius:10px">
+          <strong>${escapeHTML(item.title)}</strong>
+          <p>Дата: ${item.date ? escapeHTML(item.date) : "Не указана"}</p>
+          <p>Пробег: ${item.mileage ? Number(item.mileage).toLocaleString("ru-RU") + " км" : "Не указан"}</p>
+          <p style="color:${color};font-weight:bold">${status}</p>
+          <button type="button" onclick="deleteReminder('${escapeHTML(item.id)}')">Удалить</button>
+        </div>
+      `;
+    }).join("");
+  }
+
+  document.getElementById("reminderForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const title = document.getElementById("rTitle").value.trim();
+    const date = document.getElementById("rDate").value;
+    const mileage = document.getElementById("rMileage").value;
+
+    if (!date && !mileage) {
+      alert("Укажи дату или пробег для напоминания.");
+      return;
+    }
+
+    const data = getData();
+    if (!Array.isArray(data.reminders)) data.reminders = [];
+
+    data.reminders.unshift({
+      id: String(Date.now()),
+      title,
+      date,
+      mileage
+    });
+
+    saveData(data);
+    this.reset();
+    renderReminders();
+  });
+
+  window.deleteReminder = function(id) {
+    const data = getData();
+    data.reminders = (data.reminders || [])
+     .filter(item => item.id !== id);
+    saveData(data);
+    renderReminders();
+  };
+
+  renderReminders();
+})();
 </script>
 </body>
 </html>
